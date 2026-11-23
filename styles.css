@@ -390,6 +390,13 @@ svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width:
   gap: 5px;
 }
 
+.fitting-stage:has([data-fitting-face][aria-pressed="true"]) {
+  background: radial-gradient(ellipse at 50% 40%, #efdfcf, #bba395);
+}
+
+.fitting-stage:has([data-fitting-face][aria-pressed="true"])::before { display: none; }
+.fitting-stage:has([data-fitting-face][aria-pressed="true"]) .stage-hint { color: #3d2e2b; }
+
 @media (max-width: 520px) {
   .stage-hint { top: auto; bottom: 66px; left: 50%; transform: translateX(-50%); white-space: nowrap; }
   .fitting-stage:has([data-fitting-face][aria-pressed="true"]) .stage-hint { display: none; }

@@ -152,7 +152,7 @@ function curlPuff(parent, finish, center, size) {
     const bunch = Math.sin(3 * angle + vertical * 11) * Math.cos(vertical * 13);
     const distance = size * (.84 + .07 * bunch + .075 * Math.sin(index * 5.901));
     pose.position.set(center[0] + Math.cos(angle) * radius * distance * 1.04,
-      center[1] + vertical * distance, center[2] + Math.sin(angle) * radius * distance * .91);
+      center[1] + vertical * distance * .91, center[2] + Math.sin(angle) * radius * distance * .96);
     const width = size * (.078 + .078 * (index % 11) / 10);
     pose.scale.set(width, width * (.88 + .13 * Math.cos(index)), width * .94);
     pose.rotation.set(index * .29, angle, index * .38);
@@ -167,7 +167,7 @@ function makeEye() {
   const geometry = new THREE.SphereGeometry(1, 64, 48);
   const points = geometry.getAttribute("position");
   const colors = [];
-  const sclera = new THREE.Color(0xcbbab0);
+  const sclera = new THREE.Color(0xbeb0a5);
   const corner = new THREE.Color(0x986f66);
   const iris = new THREE.Color(0x563927);
   const rim = new THREE.Color(0x37241d);
@@ -251,7 +251,7 @@ function styleAvatar(model) {
   for (const side of [-1, 1]) {
     const x = side * .0734;
     const eyeball = eye.clone();
-    eyeball.position.set(x, 3.2484, .1862);
+    eyeball.position.set(x, 3.2481, .1855);
     eyeball.scale.set(.0345, .0345, .0383);
     headAccessories.add(eyeball);
 
@@ -261,7 +261,7 @@ function styleAvatar(model) {
     hoop.rotation.y = side * .49;
     headAccessories.add(hoop);
 
-    curlPuff(headAccessories, hair, [side * .220, 3.562 + side * .012, -.045], side < 0 ? .185 : .178);
+    curlPuff(headAccessories, hair, [side * .206, 3.480 + side * .012, -.017], side < 0 ? .173 : .166);
 
     const leg = posedLeg(model, side);
     oval(leg, sock, [side * .245, .218, -.006], [.082, .14, .083]);
@@ -482,7 +482,7 @@ function makeStage(scene) {
 }
 
 export async function createFittingRoom(container) {
-  const asset = new URL("./assets/avatar/streetwaer-portrait.glb", import.meta.url);
+  const asset = new URL("./assets/avatar/streetwaer-portrait-v2.glb", import.meta.url);
   const { scene: character } = await new GLTFLoader().loadAsync(asset.href);
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.7));
@@ -501,6 +501,10 @@ export async function createFittingRoom(container) {
   const fill = new THREE.DirectionalLight(0xe1d4ed, 1.55);
   fill.position.set(2, 4, -3);
   scene.add(fill);
+  const portraitFill = new THREE.DirectionalLight(0xfff6ee, 0);
+  portraitFill.position.set(.8, 3.18, 5);
+  portraitFill.target.position.set(0, 3.12, 0);
+  scene.add(portraitFill, portraitFill.target);
   makeStage(scene);
 
   const avatar = new THREE.Group();
@@ -532,14 +536,19 @@ export async function createFittingRoom(container) {
   }
 
   function frameCamera() {
+    const portrait = focus === "head";
+    camera.fov = portrait ? 25 : 30;
+    key.intensity = portrait ? 1.84 : 2.7;
+    portraitFill.intensity = portrait ? .86 : 0;
+    camera.updateProjectionMatrix();
     if (!focus) {
       camera.position.set(0, 2.22, Math.max(8.48, 4.65 / camera.aspect));
       camera.lookAt(0, 1.63, 0);
       return;
     }
-    if (focus === "head") {
-      camera.position.set(0, 3.205, Math.max(2.01, 1.56 / camera.aspect));
-      camera.lookAt(0, 3.197, .025);
+    if (portrait) {
+      camera.position.set(0, 3.117, Math.max(2.32, 1.59 / camera.aspect));
+      camera.lookAt(0, 3.121, .031);
       return;
     }
     const height = focus === "lower" ? .91 : 2.45;
@@ -552,7 +561,6 @@ export async function createFittingRoom(container) {
     if (!width || !height) return;
     camera.aspect = width / height;
     frameCamera();
-    camera.updateProjectionMatrix();
     renderer.setSize(width, height, false);
     draw();
   }).observe(container);
