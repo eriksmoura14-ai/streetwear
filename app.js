@@ -148,7 +148,7 @@ function openProduct(id) {
         </fieldset>
         <p class="form-message" role="alert" hidden></p>
         <button class="button button-wine" type="submit">ADICIONAR À SACOLA ${icon("bag")}</button>
-        <button class="text-link fitting-product-link" type="button" data-try-on>EXPERIMENTAR EM 3D ${icon("diagonal")}</button>
+        <button class="text-link fitting-product-link" type="button" data-try-on>EXPERIMENTAR NO PROVADOR ${icon("diagonal")}</button>
       </form>
     </div>`;
 
@@ -381,6 +381,9 @@ reducedMotion.addEventListener("change", updateHeroMotion);
 updateHeroMotion();
 
 const fittingStage = document.querySelector("#fitting-stage");
+const fittingPhoto = document.querySelector("#fitting-photo");
+const fittingLookImage = document.querySelector("#fitting-look-image");
+const fittingModes = document.querySelectorAll("[data-fitting-mode]");
 const fittingState = document.querySelector("#fitting-state");
 const fittingOutfits = document.querySelector("#fitting-outfits");
 const fittingSelection = document.querySelector("#fitting-selection");
@@ -388,6 +391,11 @@ const fittingControls = document.querySelectorAll("[data-rotate], [data-reset-vi
 const zoomButton = document.querySelector("[data-fitting-zoom]");
 const fittingReference = document.querySelector("#fitting-reference-image");
 const fittingCaption = document.querySelector("#fitting-reference-caption");
+const fittingLooks = {
+  "camiseta-asfalto": { baggy: "assets/look-camiseta-baggy.webp", base: "assets/look-camiseta-base.webp" },
+  "moletom-concreto": { baggy: "assets/look-moletom-baggy.webp", base: "assets/look-moletom-base.webp" },
+  tank: { baggy: "assets/baggy.webp", base: "assets/look-regata-base.webp" }
+};
 const outfit = { upper: "camiseta-asfalto", lower: "cargo-subsolo" };
 let fitting;
 let fittingLoad;
@@ -405,6 +413,14 @@ function updateOutfitButtons() {
     button.setAttribute("aria-pressed", String(worn));
     button.querySelector(".outfit-action").textContent = worn ? "Vestindo" : "Vestir";
   }
+}
+
+function updateFittingPhoto() {
+  const top = outfit.upper ? findProduct(outfit.upper).name : "regata clara";
+  const bottom = outfit.lower ? findProduct(outfit.lower).name : "bermuda preta";
+  const source = fittingLooks[outfit.upper || "tank"][outfit.lower ? "baggy" : "base"];
+  fittingLookImage.alt = `Modelo vestindo ${top} e ${bottom}`;
+  if (fittingLookImage.getAttribute("src") !== source) fittingLookImage.src = source;
 }
 
 function updateFittingZoom(enabled) {
@@ -427,18 +443,19 @@ function wearProduct(product, toggle = true) {
     ? `${product.name} na personagem.`
     : `${product.name} removida da personagem.`;
   fitting?.setOutfit(outfit);
-  loadFitting();
+  updateFittingPhoto();
 }
 
 function loadFitting() {
-  fittingLoad ??= import("./fitting.js").then(({ createFittingRoom }) => {
+  if (fittingLoad) return;
+  fittingStage.setAttribute("aria-busy", "true");
+  fittingLoad = import("./fitting.js").then(({ createFittingRoom }) => {
     fitting = createFittingRoom(document.querySelector("#fitting-canvas"));
     fitting.setOutfit(outfit);
     fittingState.hidden = true;
     for (const button of fittingControls) button.disabled = false;
   }).catch(() => {
-    fittingState.textContent = "O provador 3D está indisponível neste navegador. As fotos das peças continuam no catálogo.";
-    for (const button of fittingOutfits.querySelectorAll("[data-outfit]")) button.disabled = true;
+    fittingState.textContent = "A rotação 3D está indisponível neste navegador. Selecione Foto da modelo para continuar provando as peças.";
   }).finally(() => fittingStage.setAttribute("aria-busy", "false"));
 }
 
@@ -469,10 +486,15 @@ for (const button of fittingControls) {
   });
 }
 
-const fittingObserver = new IntersectionObserver(([entry]) => {
-  if (entry.isIntersecting) {
-    loadFitting();
-    fittingObserver.disconnect();
-  }
-}, { rootMargin: "300px" });
-fittingObserver.observe(fittingStage);
+for (const button of fittingModes) {
+  button.addEventListener("click", () => {
+    const use3D = button.dataset.fittingMode === "3d";
+    for (const mode of fittingModes) {
+      mode.setAttribute("aria-pressed", String(mode === button));
+    }
+    fittingPhoto.hidden = use3D;
+    fittingStage.hidden = !use3D;
+    fittingReference.closest("details").hidden = !use3D;
+    if (use3D) loadFitting();
+  });
+}

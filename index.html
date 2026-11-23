@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f8f7f4">
-  <meta name="description" content="Streetwaer. Streetwear feminino, caimento oversized e um provador 3D para montar seu look.">
+  <meta name="description" content="Streetwaer. Streetwear feminino, caimento oversized e um provador virtual para montar seu look.">
   <title>Streetwaer — Do asfalto pra rua</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="preload" href="assets/archivo-black-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -30,7 +30,7 @@
       <a class="brand" href="#" aria-label="Streetwaer, início">STREETWAER<span aria-hidden="true">✷</span></a>
       <nav class="main-nav" aria-label="Principal">
         <a class="current" href="#">Início</a>
-        <a href="#colecao">Loja</a><a href="#provador">Provador 3D</a>
+        <a href="#colecao">Loja</a><a href="#provador">Provador</a>
         <a href="#sobre">Sobre</a>
       </nav>
       <div class="header-actions">
@@ -40,7 +40,7 @@
       </div>
     </div>
     <nav id="mobile-nav" class="mobile-nav" aria-label="Principal no celular" hidden>
-      <a href="#">Início</a><a href="#colecao">Loja</a><a href="#provador">Provador 3D</a><a href="#sobre">Sobre</a>
+      <a href="#">Início</a><a href="#colecao">Loja</a><a href="#provador">Provador</a><a href="#sobre">Sobre</a>
     </nav>
   </header>
 
@@ -53,7 +53,7 @@
           <h1 id="hero-title">DO ASFALTO<br><em>PRA RUA.</em></h1>
           <p class="hero-description">Streetwear feminino, caimento largo e liberdade<br class="desktop-break"> de vestir do seu jeito.</p>
           <a class="button button-light" href="#colecao">EXPLORAR O DROP <svg><use href="#i-diagonal"/></svg></a>
-          <a class="hero-fitting-link" href="#provador">PROVAR EM 3D <svg><use href="#i-diagonal"/></svg></a>
+          <a class="hero-fitting-link" href="#provador">MONTAR O LOOK <svg><use href="#i-diagonal"/></svg></a>
         </div>
       </div>
     </section>
@@ -87,26 +87,35 @@
       <div class="container fitting-inner">
         <div class="fitting-header">
           <p class="eyebrow"><span></span> MONTE SEU LOOK</p>
-          <h2 id="fitting-title" tabindex="-1">PROVADOR <em>3D.</em></h2>
-          <p>Vista as peças na personagem e gire o look para ver o caimento por todos os lados.</p>
+          <h2 id="fitting-title" tabindex="-1">PROVE O <em>LOOK.</em></h2>
+          <p>Combine as peças na modelo do catálogo.</p>
         </div>
         <div class="fitting-layout">
-          <div class="fitting-stage" id="fitting-stage" aria-busy="true">
-            <div class="fitting-canvas" id="fitting-canvas"></div>
-            <p class="fitting-state" id="fitting-state" role="status">Carregando personagem…</p>
-            <div class="rotation-controls" role="group" aria-label="Girar personagem">
-              <button type="button" class="icon-button rotate-left" data-rotate="-1" aria-label="Girar à esquerda" disabled><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
-              <button type="button" class="icon-button" data-reset-view aria-label="Voltar à vista inicial" disabled><svg aria-hidden="true"><use href="#i-rotate"/></svg></button>
-              <button type="button" class="icon-button" data-rotate="1" aria-label="Girar à direita" disabled><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          <div class="fitting-view">
+            <div class="fitting-modes" role="group" aria-label="Visualização do look">
+              <button type="button" data-fitting-mode="photo" aria-pressed="true" aria-controls="fitting-photo">Foto da modelo</button>
+              <button type="button" data-fitting-mode="3d" aria-pressed="false" aria-controls="fitting-stage">Girar em 3D</button>
             </div>
-            <p class="stage-hint">ARRASTE PARA GIRAR</p>
-            <button class="fitting-zoom" type="button" data-fitting-zoom aria-pressed="false" disabled>VER DE PERTO</button>
+            <figure class="fitting-photo" id="fitting-photo">
+              <img id="fitting-look-image" src="assets/look-camiseta-baggy.webp" alt="Modelo vestindo Camiseta Asfalto e Baggy Subsolo" width="675" height="900" loading="lazy">
+            </figure>
+            <div class="fitting-stage" id="fitting-stage" aria-busy="false" hidden>
+              <div class="fitting-canvas" id="fitting-canvas"></div>
+              <p class="fitting-state" id="fitting-state" role="status">Carregando personagem…</p>
+              <div class="rotation-controls" role="group" aria-label="Girar personagem">
+                <button type="button" class="icon-button rotate-left" data-rotate="-1" aria-label="Girar à esquerda" disabled><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+                <button type="button" class="icon-button" data-reset-view aria-label="Voltar à vista inicial" disabled><svg aria-hidden="true"><use href="#i-rotate"/></svg></button>
+                <button type="button" class="icon-button" data-rotate="1" aria-label="Girar à direita" disabled><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+              </div>
+              <p class="stage-hint">ARRASTE PARA GIRAR</p>
+              <button class="fitting-zoom" type="button" data-fitting-zoom aria-pressed="false" disabled>VER DE PERTO</button>
+            </div>
           </div>
           <div class="fitting-wardrobe">
             <h3>Escolha as peças</h3>
             <p>Combine uma peça de cima com a Baggy Subsolo. Clique novamente para remover uma peça.</p>
             <div id="fitting-outfits"></div>
-            <details class="fitting-reference">
+            <details class="fitting-reference" hidden>
               <summary>Comparar com a foto do catálogo</summary>
               <figure>
                 <img id="fitting-reference-image" src="assets/camiseta.webp" alt="Camiseta Asfalto vestida na modelo" width="800" height="1000" loading="lazy">
