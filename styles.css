@@ -240,7 +240,7 @@ svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width:
 .fitting-header > p:last-child { color: var(--muted); margin-top: 13px; font-size: 16px; }
 .fitting-layout { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(290px, 1fr); gap: clamp(14px, 2.3vw, 32px); }
 .fitting-stage {
-  position: relative; isolation: isolate; overflow: hidden; min-height: 545px; color: #fff7f4;
+  position: relative; isolation: isolate; overflow: hidden; align-self: start; min-height: 545px; color: #fff7f4;
   background: radial-gradient(ellipse at 50% 44%, #524650 0%, #322b33 46%, #1b181c 100%);
 }
 .fitting-stage::before {
@@ -286,4 +286,55 @@ svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width:
 @media (max-width: 520px) {
   .hero-fitting-link { display: flex; margin-left: 0; width: fit-content; }
   .product-detail > img { min-height: 0; height: min(44vh, 300px); object-fit: contain; }
+}
+
+.fitting-zoom {
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  padding: 8px 10px;
+  border: 1px solid #8c7b88;
+  background: #211b23e6;
+  color: #fff7f4;
+  font: 10px/1.25 var(--mono);
+  letter-spacing: .055em;
+}
+
+.fitting-zoom:hover, .fitting-zoom[aria-pressed="true"] {
+  border-color: #f3adb9;
+  color: #f9cad4;
+}
+
+.fitting-zoom:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+.fitting-reference {
+  margin-top: 14px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  color: var(--wine);
+  font-size: 13px;
+}
+
+.fitting-reference summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.fitting-reference figure {
+  margin: 10px 0 0;
+}
+
+.fitting-reference img {
+  height: auto;
+  max-height: 340px;
+  object-fit: contain;
+  background: #e4d1bd;
+}
+
+.fitting-reference figcaption {
+  margin-top: 5px;
+  color: var(--muted);
 }

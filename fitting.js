@@ -65,14 +65,14 @@ function sculpt(parent, finish, rings) {
   const minHeight = rings[0][0];
   const heightRange = rings.at(-1)[0] - minHeight;
 
-  for (const [height, width, depth, centerX = 0, centerZ = 0, fold = 0] of rings) {
+  for (const [height, width, depth, centerX = 0, centerZ = 0, fold = 0, drape = 0] of rings) {
     for (let segment = 0; segment <= segments; segment += 1) {
       const angle = 2 * Math.PI * segment / segments;
       const ripple = fold * (.52 * Math.sin(5 * angle + height * 8)
         + .31 * Math.cos(8 * angle - height * 10) + .17 * Math.sin(13 * angle + height * 16));
       vertices.push(
         centerX + Math.cos(angle) * Math.max(width + ripple, .001),
-        height + .32 * fold * Math.sin(3 * angle),
+        height + .32 * fold * Math.sin(3 * angle) + drape * Math.cos(angle) ** 2,
         centerZ + Math.sin(angle) * Math.max(depth + ripple, .001)
       );
       coordinates.push(segment / segments, (height - minHeight) / heightRange);
@@ -174,9 +174,34 @@ function panel(parent, finish, outline, position, angle = 0, depth = .014) {
   parent.add(mesh);
 }
 
+function posedPart(parent, [x, y, z], [pitch, yaw, roll]) {
+  const pivot = new THREE.Group();
+  pivot.position.set(x, y, z);
+  pivot.rotation.set(pitch, yaw, roll);
+  const part = new THREE.Group();
+  part.position.set(-x, -y, -z);
+  pivot.add(part);
+  parent.add(pivot);
+  return part;
+}
+
+function posedArm(parent, side) {
+  return posedPart(parent, [side * .345, 2.58, 0], side < 0
+    ? [-.145, .03, .052]
+    : [-.036, -.058, -.058]);
+}
+
+function posedLeg(parent, side) {
+  return posedPart(parent, [side * .16, 1.63, .01], side < 0
+    ? [-.050, -.085, -.033]
+    : [.042, .11, .033]);
+}
+
 function makeCharacter(model) {
   const skin = material(0x86503c, .64);
   const shadowSkin = material(0x603629, .76);
+  const cheek = material(0x8a4a39, .69);
+  const lash = material(0x291c1c, .78);
   const lips = material(0x682f31, .51);
   const lowerLip = material(0x894c43, .56);
   const hair = material(0x211815, .67);
@@ -194,8 +219,7 @@ function makeCharacter(model) {
     [2.22, .259, .153], [2.42, .32, .202, 0, .026], [2.62, .337, .158],
     [2.74, .214, .108], [2.79, .114, .104], [2.99, .11, .095], [3.01, 0, 0]
   ]);
-  const head = new THREE.Group();
-  model.add(head);
+  const head = posedPart(model, [0, 2.96, .07], [-.035, .089, .054]);
   sculpt(head, skin, [
     [2.96, 0, 0, 0, .07], [2.99, .103, .099, 0, .066], [3.045, .158, .137, 0, .054], [3.115, .189, .154, 0, .04],
     [3.18, .216, .172, 0, .028], [3.24, .224, .179, 0, .020], [3.30, .225, .182, 0, .015], [3.41, .209, .165],
@@ -222,51 +246,56 @@ function makeCharacter(model) {
     hoop.position.set(side * .239, 3.085, .033);
     hoop.rotation.y = side * .56;
     head.add(hoop);
+    oval(head, cheek, [side * .132, 3.165, .155], [.068, .043, .029], side * .19);
     oval(head, eyes, [side * .099, 3.232, .183], [.054, .014, .021], side * .105);
     oval(head, pupils, [side * .096, 3.233, .200], [.016, .016, .010]);
     oval(head, eyes, [side * .096 - .006, 3.239, .209], [.003, .003, .002]);
-    stitch(head, hair, [
+    stitch(head, lash, [
       [side * .045, 3.241, .202], [side * .092, 3.256, .206], [side * .145, 3.243, .188]
     ], .005);
     stitch(head, hair, [
       [side * .04, 3.285, .196], [side * .094, 3.304, .190], [side * .153, 3.287, .174]
     ], .009);
 
-    curlPuff(head, curls, [side * .234, 3.478, -.133], .178);
+    curlPuff(head, curls, [side * .248, 3.504, -.125], side < 0 ? .186 : .173);
+    stitch(head, hair, [[side * .022, 3.417, .164], [side * .059, 3.452, .172],
+      [side * .111, 3.47, .157]], .006);
     for (let index = 0; index < 7; index += 1) {
       const x = side * (.019 + index * .025);
       stitch(head, curls, [[x, 3.403 - index * .009, .164],
         [x + side * .014, 3.430 - index * .007, .177], [x + side * .028, 3.45, .160]], .0035);
     }
 
-    sculpt(model, skin, [
+    const arm = posedArm(model, side);
+    sculpt(arm, skin, [
       [1.44, 0, 0, side * .51, .065], [1.47, .055, .043, side * .51, .065],
       [1.57, .074, .050, side * .528, .065], [1.69, .055, .055, side * .523, .048],
       [1.88, .073, .070, side * .544, .048], [2.08, .087, .082, side * .545, .018],
       [2.30, .103, .095, side * .462], [2.52, .123, .111, side * .380],
-      [2.67, .094, .091, side * .34], [2.71, 0, 0, side * .33]
+      [2.65, .074, .077, side * .322], [2.695, 0, 0, side * .312]
     ]);
-    oval(model, skin, [side * .484, 1.564, .091], [.024, .067, .027], side * -.22);
+    oval(arm, skin, [side * .484, 1.564, .091], [.024, .067, .027], side * -.22);
     for (let finger = 0; finger < 4; finger += 1) {
       const x = side * (.496 + finger * .022);
-      oval(model, skin, [x, 1.467 + Math.abs(finger - 1) * .011, .070 - finger * .009],
+      oval(arm, skin, [x, 1.467 + Math.abs(finger - 1) * .011, .070 - finger * .009],
         [.0148, .053 - Math.abs(finger - 1) * .007, .018], side * -.09);
     }
 
-    sculpt(model, skin, [
+    const leg = posedLeg(model, side);
+    sculpt(leg, skin, [
       [.11, 0, 0, side * .246], [.18, .072, .068, side * .246], [.35, .077, .08, side * .239],
       [.58, .108, .103, side * .226], [.86, .105, .111, side * .206], [1.19, .133, .135, side * .177, .022],
       [1.55, .151, .157, side * .155], [1.80, .154, .158, side * .149], [1.85, 0, 0, side * .149]
     ]);
-    oval(model, sock, [side * .245, .218, -.006], [.082, .14, .083]);
-    oval(model, sole, [side * .254, .064, .089], [.132, .055, .233]);
-    oval(model, leather, [side * .253, .129, .089], [.126, .097, .222]);
-    oval(model, leather, [side * .251, .173, -.023], [.102, .104, .124]);
+    oval(leg, sock, [side * .245, .218, -.006], [.082, .14, .083]);
+    oval(leg, sole, [side * .254, .064, .089], [.132, .055, .233]);
+    oval(leg, leather, [side * .253, .129, .089], [.126, .097, .222]);
+    oval(leg, leather, [side * .251, .173, -.023], [.102, .104, .124]);
     for (let index = 0; index < 3; index += 1) {
       const y = .2 - .008 * index;
       const z = .115 + .034 * index;
       const x = side * .251;
-      stitch(model, laces, [[x - .063, y, z], [x, y + .009, z + .005], [x + .063, y, z]], .006);
+      stitch(leg, laces, [[x - .063, y, z], [x, y + .009, z + .005], [x + .063, y, z]], .006);
     }
   }
 }
@@ -276,7 +305,7 @@ function makeWardrobe(model) {
   const shortsColor = material(0x383039);
   const fadedBlack = fabric(0x373334, 49, .25);
   const teeSeam = material(0x353031);
-  const wine = fabric(0x7d1830, 13, .20);
+  const wine = fabric(0x701427, 15, .20);
   const wineRib = fabric(0x591023, 10, 0);
   const burgundySeam = material(0x641b30);
   const denim = fabric(0x383538, 38, 1);
@@ -303,7 +332,7 @@ function makeWardrobe(model) {
     [1.46, .31, .186], [1.62, .334, .205], [1.79, .333, .205], [1.96, .271, .168]
   ]);
   for (const side of [-1, 1]) {
-    sculpt(shorts, shortsColor, [
+    sculpt(posedLeg(shorts, side), shortsColor, [
       [1.19, .146, .148, side * .178, .02], [1.37, .154, .166, side * .164, .014],
       [1.59, .171, .179, side * .157]
     ]);
@@ -312,7 +341,7 @@ function makeWardrobe(model) {
   const tee = new THREE.Group();
   model.add(tee);
   sculpt(tee, fadedBlack, [
-    [1.65, .363, .220, .009, .008, .037], [1.69, .405, .224, .008, .006, .038],
+    [1.59, .351, .225, .012, .014, .032, .108], [1.63, .380, .234, .012, .013, .039, .097],
     [1.80, .385, .240, .002, .025, .042], [1.93, .373, .225, -.008, .012, .034],
     [2.13, .366, .240, 0, .005, .020], [2.37, .400, .236, .005, .028, .023],
     [2.52, .451, .219, 0, 0, .012], [2.66, .428, .193],
@@ -323,17 +352,18 @@ function makeWardrobe(model) {
     [2.769, .121, .109, 0, .008]
   ]);
   for (const side of [-1, 1]) {
-    sculpt(tee, fadedBlack, [
-      [2.132, .155, .153, side * .511, .008, .019],
-      [2.161, .157, .155, side * .504, .008, .016],
+    const sleeve = posedArm(tee, side);
+    sculpt(sleeve, fadedBlack, [
+      [2.128, .157, .153, side * .507, .008, .016, -.057],
+      [2.162, .164, .154, side * .500, .008, .016, -.053],
       [2.315, .173, .168, side * .464, .014, .011],
       [2.498, .183, .171, side * .418, 0, .013],
       [2.645, .146, .145, side * .374], [2.68, 0, 0, side * .36]
     ]);
-    stitch(tee, teeSeam, [[side * .392, 2.61, .141], [side * .432, 2.53, .177],
+    stitch(sleeve, teeSeam, [[side * .392, 2.61, .141], [side * .432, 2.53, .177],
       [side * .457, 2.396, .171], [side * .416, 2.283, .154]], .004);
   }
-  badge(tee, warmWhite, .178, 2.408, .262, "circle");
+  badge(tee, warmWhite, .209, 2.441, .251, "circle");
 
   const hoodie = new THREE.Group();
   model.add(hoodie);
@@ -365,7 +395,8 @@ function makeWardrobe(model) {
   panel(hoodie, wine, [[-.17, .095], [.17, .095], [.233, -.013],
     [.214, -.102], [-.214, -.102], [-.233, -.013]], [0, 1.939, .252]);
   for (const side of [-1, 1]) {
-    sculpt(hoodie, wine, [
+    const sleeve = posedArm(hoodie, side);
+    sculpt(sleeve, wine, [
       [1.593, .073, .071, side * .530, .058, .011],
       [1.69, .097, .086, side * .535, .054, .023],
       [1.82, .126, .119, side * .548, .042, .029],
@@ -374,7 +405,7 @@ function makeWardrobe(model) {
       [2.49, .178, .161, side * .456, .008, .014],
       [2.67, .145, .135, side * .387], [2.74, 0, 0, side * .37]
     ]);
-    sculpt(hoodie, wineRib, [
+    sculpt(sleeve, wineRib, [
       [1.590, .077, .075, side * .529, .057],
       [1.634, .083, .077, side * .530, .057, .009],
       [1.694, .100, .091, side * .536, .055, .020]
@@ -382,7 +413,7 @@ function makeWardrobe(model) {
     stitch(hoodie, burgundySeam, [[side * .162, 2.031, .273],
       [side * .206, 1.995, .280], [side * .224, 1.928, .276]], .006);
   }
-  badge(hoodie, warmWhite, .192, 2.438, .268, "star");
+  badge(hoodie, warmWhite, .223, 2.469, .257, "star");
 
   const baggy = new THREE.Group();
   model.add(baggy);
@@ -398,9 +429,10 @@ function makeWardrobe(model) {
   stitch(baggy, denimSeam, [[.012, 1.924, .204], [.059, 1.804, .212], [.044, 1.712, .224]], .0035);
 
   for (const side of [-1, 1]) {
-    sculpt(baggy, denim, [
-      [.091, .269, .202, side * .277, .033, .028],
-      [.134, .276, .217, side * .276, .035, .044],
+    const leg = posedLeg(baggy, side);
+    sculpt(leg, denim, [
+      [.075, .272, .230, side * .277, .049, .023],
+      [.132, .276, .226, side * .276, .046, .045],
       [.197, .273, .195, side * .275, .012, .054],
       [.255, .256, .212, side * .270, .025, .045],
       [.345, .272, .200, side * .263, .006, .042],
@@ -412,17 +444,19 @@ function makeWardrobe(model) {
       [1.245, .227, .197, side * .191, .019, .023],
       [1.46, .201, .192, side * .173, .001, .013], [1.70, .183, .169, side * .155, .01]
     ]);
-    const pocketCenter = [side * .362, 1.03, .149];
-    const pocketAngle = side * .72;
-    panel(baggy, pocket, [[-.122, .156], [.122, .156], [.118, -.143],
+    const pocketCenter = [side * .370, 1.03, .142];
+    const pocketAngle = side * .82;
+    panel(leg, pocket, [[-.122, .156], [.122, .156], [.118, -.143],
       [.088, -.174], [-.093, -.174], [-.114, -.14]], pocketCenter, pocketAngle, .036);
-    panel(baggy, denim, [[-.135, .028], [.135, .028], [.124, -.054],
+    panel(leg, denim, [[-.135, .028], [.135, .028], [.124, -.054],
       [0, -.086], [-.126, -.055]], [side * .377, 1.186, .172], pocketAngle, .015);
     stitch(baggy, denimSeam, [[side * .174, 1.919, .158],
       [side * .236, 1.818, .164], [side * .319, 1.801, .119]], .004);
-    stitch(baggy, denimSeam, [[side * .527, .156, .047], [side * .497, .438, .044],
+    stitch(leg, denimSeam, [[side * .527, .156, .047], [side * .497, .438, .044],
       [side * .463, .718, .046], [side * .436, .94, .054],
       [side * .431, 1.267, .054], [side * .367, 1.628, .070]], .005);
+    stitch(leg, denimSeam, [[side * .111, .092, .141], [side * .225, .113, .242],
+      [side * .347, .105, .235], [side * .467, .104, .158]], .0034);
     for (let offset = 0; offset < 2; offset += 1) {
       const y = 1.94 + offset * .018;
       stitch(baggy, denimSeam, [[side * .133, y, .164],
@@ -492,6 +526,7 @@ export function createFittingRoom(container) {
   let goal = initialAngle;
   let frame;
   let pointer;
+  let focus;
   avatar.rotation.y = goal;
 
   function render() {
@@ -506,12 +541,22 @@ export function createFittingRoom(container) {
     if (frame === undefined) frame = requestAnimationFrame(render);
   }
 
+  function frameCamera() {
+    if (!focus) {
+      camera.position.set(0, 2.45, Math.max(8.47, 4.65 / camera.aspect));
+      camera.lookAt(0, 1.61, 0);
+      return;
+    }
+    const height = focus === "lower" ? .91 : 2.45;
+    camera.position.set(0, height + .24, Math.max(4.40, 3.55 / camera.aspect));
+    camera.lookAt(0, height, 0);
+  }
+
   new ResizeObserver(() => {
     const { clientWidth: width, clientHeight: height } = container;
     if (!width || !height) return;
     camera.aspect = width / height;
-    camera.position.set(0, 2.45, Math.max(8.47, 4.65 / camera.aspect));
-    camera.lookAt(0, 1.61, 0);
+    frameCamera();
     camera.updateProjectionMatrix();
     renderer.setSize(width, height, false);
     draw();
@@ -542,6 +587,12 @@ export function createFittingRoom(container) {
       wardrobe.tank.visible = !outfit.upper;
       wardrobe.baggy.visible = outfit.lower === "cargo-subsolo";
       wardrobe.shorts.visible = !outfit.lower;
+      draw();
+    },
+    focusPiece(slot) {
+      if (focus === slot) return;
+      focus = slot;
+      frameCamera();
       draw();
     },
     rotate(direction) {

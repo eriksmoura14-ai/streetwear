@@ -100,11 +100,19 @@
               <button type="button" class="icon-button" data-rotate="1" aria-label="Girar à direita" disabled><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
             </div>
             <p class="stage-hint">ARRASTE PARA GIRAR</p>
+            <button class="fitting-zoom" type="button" data-fitting-zoom aria-pressed="false" disabled>VER DE PERTO</button>
           </div>
           <div class="fitting-wardrobe">
             <h3>Escolha as peças</h3>
             <p>Combine uma peça de cima com a Baggy Subsolo. Clique novamente para remover uma peça.</p>
             <div id="fitting-outfits"></div>
+            <details class="fitting-reference">
+              <summary>Comparar com a foto do catálogo</summary>
+              <figure>
+                <img id="fitting-reference-image" src="assets/camiseta.webp" alt="Camiseta Asfalto vestida na modelo" width="800" height="1000" loading="lazy">
+                <figcaption id="fitting-reference-caption">Camiseta Asfalto</figcaption>
+              </figure>
+            </details>
             <p class="sr-only" id="fitting-selection" role="status"></p>
           </div>
         </div>

@@ -384,10 +384,15 @@ const fittingStage = document.querySelector("#fitting-stage");
 const fittingState = document.querySelector("#fitting-state");
 const fittingOutfits = document.querySelector("#fitting-outfits");
 const fittingSelection = document.querySelector("#fitting-selection");
-const fittingControls = document.querySelectorAll("[data-rotate], [data-reset-view]");
+const fittingControls = document.querySelectorAll("[data-rotate], [data-reset-view], [data-fitting-zoom]");
+const zoomButton = document.querySelector("[data-fitting-zoom]");
+const fittingReference = document.querySelector("#fitting-reference-image");
+const fittingCaption = document.querySelector("#fitting-reference-caption");
 const outfit = { upper: "camiseta-asfalto", lower: "cargo-subsolo" };
 let fitting;
 let fittingLoad;
+let referenceProduct = findProduct(outfit.upper);
+let zoomed = false;
 
 function outfitSlot(product) {
   return product.category === "calcas" ? "lower" : "upper";
@@ -402,10 +407,22 @@ function updateOutfitButtons() {
   }
 }
 
+function updateFittingZoom(enabled) {
+  zoomed = enabled;
+  zoomButton.setAttribute("aria-pressed", String(zoomed));
+  zoomButton.textContent = zoomed ? "VER LOOK INTEIRO" : "VER DE PERTO";
+  fitting?.focusPiece(zoomed ? outfitSlot(referenceProduct) : null);
+}
+
 function wearProduct(product, toggle = true) {
   const slot = outfitSlot(product);
   outfit[slot] = toggle && outfit[slot] === product.id ? null : product.id;
   updateOutfitButtons();
+  referenceProduct = product;
+  fittingReference.src = product.image;
+  fittingReference.alt = `${product.name} vestida na modelo`;
+  fittingCaption.textContent = product.name;
+  updateFittingZoom(zoomed);
   fittingSelection.textContent = outfit[slot]
     ? `${product.name} na personagem.`
     : `${product.name} removida da personagem.`;
@@ -441,8 +458,14 @@ fittingOutfits.addEventListener("click", (event) => {
 
 for (const button of fittingControls) {
   button.addEventListener("click", () => {
-    if (button.hasAttribute("data-reset-view")) fitting.resetView();
-    else fitting.rotate(Number(button.dataset.rotate));
+    if (button === zoomButton) {
+      updateFittingZoom(!zoomed);
+    } else if (button.hasAttribute("data-reset-view")) {
+      updateFittingZoom(false);
+      fitting.resetView();
+    } else {
+      fitting.rotate(Number(button.dataset.rotate));
+    }
   });
 }
 
