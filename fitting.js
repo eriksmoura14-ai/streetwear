@@ -139,9 +139,9 @@ function badge(parent, finish, x, y, z, style) {
 }
 
 function curlPuff(parent, finish, center, size) {
-  oval(parent, finish, center, [size * .82, size * .85, size * .81]);
-  const curl = new THREE.IcosahedronGeometry(1, 2);
-  const count = 270;
+  oval(parent, finish, center, [size * .76, size * .79, size * .73]);
+  const curl = new THREE.TorusGeometry(.64, .31, 5, 14, Math.PI * 1.72);
+  const count = 630;
   const surface = new THREE.InstancedMesh(curl, finish, count);
   const pose = new THREE.Object3D();
   const tint = new THREE.Color();
@@ -149,17 +149,55 @@ function curlPuff(parent, finish, center, size) {
     const vertical = 1 - 2 * (index + .5) / count;
     const radius = Math.sqrt(1 - vertical * vertical);
     const angle = index * 2.39996;
-    const distance = size * (.76 + .16 * Math.sin(index * 5.901));
-    pose.position.set(center[0] + Math.cos(angle) * radius * distance,
-      center[1] + vertical * distance, center[2] + Math.sin(angle) * radius * distance);
-    const width = size * (.104 + .062 * (index % 7) / 6);
-    pose.scale.set(width, width * .85, width * 1.13);
+    const bunch = Math.sin(3 * angle + vertical * 11) * Math.cos(vertical * 13);
+    const distance = size * (.84 + .07 * bunch + .075 * Math.sin(index * 5.901));
+    pose.position.set(center[0] + Math.cos(angle) * radius * distance * 1.04,
+      center[1] + vertical * distance, center[2] + Math.sin(angle) * radius * distance * .91);
+    const width = size * (.078 + .078 * (index % 11) / 10);
+    pose.scale.set(width, width * (.88 + .13 * Math.cos(index)), width * .94);
     pose.rotation.set(index * .29, angle, index * .38);
     pose.updateMatrix();
     surface.setMatrixAt(index, pose.matrix);
-    surface.setColorAt(index, tint.setScalar(.65 + .35 * (index % 9) / 8));
+    surface.setColorAt(index, tint.setScalar(.66 + .34 * (index % 15) / 14));
   }
   parent.add(surface);
+}
+
+function makeEye() {
+  const geometry = new THREE.SphereGeometry(1, 64, 48);
+  const points = geometry.getAttribute("position");
+  const colors = [];
+  const sclera = new THREE.Color(0xcbbab0);
+  const corner = new THREE.Color(0x986f66);
+  const iris = new THREE.Color(0x563927);
+  const rim = new THREE.Color(0x37241d);
+  const pupil = new THREE.Color(0x13100f);
+  const whitening = THREE.MathUtils.smoothstep;
+  const tone = new THREE.Color();
+
+  for (let i = 0; i < points.count; i += 1) {
+    const x = points.getX(i);
+    const y = points.getY(i);
+    const radius = Math.hypot(x - .022, y);
+    const front = points.getZ(i) > 0;
+    tone.copy(sclera).lerp(corner, .38 * whitening(Math.abs(x), .48, .97));
+
+    if (front && radius < .45) {
+      const angle = Math.atan2(y, x - .022);
+      const fibers = .86 + .11 * Math.sin(37 * angle + 14 * radius) + .08 * Math.sin(23 * angle - 8 * radius);
+      tone.copy(iris).multiplyScalar(fibers);
+      tone.lerp(rim, whitening(radius, .31, .41));
+      tone.lerp(pupil, 1 - whitening(radius, .140, .181));
+    }
+
+    colors.push(tone.r, tone.g, tone.b);
+  }
+
+  geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
+  const finish = new THREE.MeshPhysicalMaterial({
+    vertexColors: true, roughness: .36, clearcoat: .68, clearcoatRoughness: .18
+  });
+  return new THREE.Mesh(geometry, finish);
 }
 
 function panel(parent, finish, outline, position, angle = 0, depth = .014) {
@@ -199,10 +237,8 @@ function posedLeg(parent, side) {
 }
 
 function styleAvatar(model) {
-  const hair = material(0x221511, .72);
-  const eyeWhite = material(0xb7a297, .48);
-  const iris = material(0x35201a, .48);
-  const pupil = material(0x100c0b, .29);
+  const hair = material(0x251811, .79);
+  const eye = makeEye();
   const earrings = new THREE.MeshStandardMaterial({ color: 0xdca765, metalness: .52, roughness: .28 });
   const sock = material(0x29252a);
   const sole = material(0xb3aaa8);
@@ -214,23 +250,18 @@ function styleAvatar(model) {
 
   for (const side of [-1, 1]) {
     const x = side * .0734;
-    oval(headAccessories, eyeWhite, [x, 3.2486, .1853], [.0375, .038, .0396]);
-    oval(headAccessories, iris, [x + .002, 3.248, .2165], [.0182, .018, .0108]);
-    oval(headAccessories, pupil, [x + .002, 3.248, .2248], [.008, .008, .004]);
+    const eyeball = eye.clone();
+    eyeball.position.set(x, 3.2484, .1862);
+    eyeball.scale.set(.0345, .0345, .0383);
+    headAccessories.add(eyeball);
 
     const hoop = new THREE.Mesh(new THREE.TorusGeometry(.050, .0045, 10, 42), earrings);
     hoop.scale.set(.80, 1.13, 1);
-    hoop.position.set(side * .198, 3.138, .123);
+    hoop.position.set(side * .193, 3.131, .119);
     hoop.rotation.y = side * .49;
     headAccessories.add(hoop);
 
-    curlPuff(headAccessories, hair, [side * .213, 3.578 + side * .018, -.035], side < 0 ? .192 : .178);
-    for (let strand = 0; strand < 3; strand += 1) {
-      const x = side * (.081 + strand * .042);
-      stitch(headAccessories, hair, [[x, 3.490 + strand * .015, .203 - strand * .025],
-        [x + side * .029, 3.522 + strand * .013, .202 - strand * .023],
-        [x + side * .047, 3.550 + strand * .01, .175 - strand * .025]], .0026);
-    }
+    curlPuff(headAccessories, hair, [side * .220, 3.562 + side * .012, -.045], side < 0 ? .185 : .178);
 
     const leg = posedLeg(model, side);
     oval(leg, sock, [side * .245, .218, -.006], [.082, .14, .083]);
@@ -451,7 +482,7 @@ function makeStage(scene) {
 }
 
 export async function createFittingRoom(container) {
-  const asset = new URL("./assets/avatar/streetwaer-fit.glb", import.meta.url);
+  const asset = new URL("./assets/avatar/streetwaer-portrait.glb", import.meta.url);
   const { scene: character } = await new GLTFLoader().loadAsync(asset.href);
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.7));
@@ -504,6 +535,11 @@ export async function createFittingRoom(container) {
     if (!focus) {
       camera.position.set(0, 2.22, Math.max(8.48, 4.65 / camera.aspect));
       camera.lookAt(0, 1.63, 0);
+      return;
+    }
+    if (focus === "head") {
+      camera.position.set(0, 3.205, Math.max(2.01, 1.56 / camera.aspect));
+      camera.lookAt(0, 3.197, .025);
       return;
     }
     const height = focus === "lower" ? .91 : 2.45;

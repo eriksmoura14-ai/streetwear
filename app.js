@@ -387,8 +387,9 @@ const fittingModes = document.querySelectorAll("[data-fitting-mode]");
 const fittingState = document.querySelector("#fitting-state");
 const fittingOutfits = document.querySelector("#fitting-outfits");
 const fittingSelection = document.querySelector("#fitting-selection");
-const fittingControls = document.querySelectorAll("[data-rotate], [data-reset-view], [data-fitting-zoom]");
+const fittingControls = document.querySelectorAll("[data-rotate], [data-reset-view], [data-fitting-zoom], [data-fitting-face]");
 const zoomButton = document.querySelector("[data-fitting-zoom]");
+const faceButton = document.querySelector("[data-fitting-face]");
 const fittingReference = document.querySelector("#fitting-reference-image");
 const fittingCaption = document.querySelector("#fitting-reference-caption");
 const fittingLooks = {
@@ -400,7 +401,7 @@ const outfit = { upper: "camiseta-asfalto", lower: "cargo-subsolo" };
 let fitting;
 let fittingLoad;
 let referenceProduct = findProduct(outfit.upper);
-let zoomed = false;
+let fittingView = null;
 
 function outfitSlot(product) {
   return product.category === "calcas" ? "lower" : "upper";
@@ -423,11 +424,14 @@ function updateFittingPhoto() {
   if (fittingLookImage.getAttribute("src") !== source) fittingLookImage.src = source;
 }
 
-function updateFittingZoom(enabled) {
-  zoomed = enabled;
-  zoomButton.setAttribute("aria-pressed", String(zoomed));
-  zoomButton.textContent = zoomed ? "VER LOOK INTEIRO" : "VER DE PERTO";
-  fitting?.focusPiece(zoomed ? outfitSlot(referenceProduct) : null);
+function updateFittingView(view) {
+  fittingView = view;
+  const garmentZoom = view === "garment";
+  zoomButton.setAttribute("aria-pressed", String(garmentZoom));
+  zoomButton.textContent = garmentZoom ? "VER LOOK INTEIRO" : "VER DE PERTO";
+  faceButton.setAttribute("aria-pressed", String(view === "head"));
+  faceButton.textContent = view === "head" ? "VOLTAR AO LOOK" : "VER ROSTO";
+  fitting?.focusPiece(garmentZoom ? outfitSlot(referenceProduct) : view);
 }
 
 function wearProduct(product, toggle = true) {
@@ -438,7 +442,7 @@ function wearProduct(product, toggle = true) {
   fittingReference.src = product.image;
   fittingReference.alt = `${product.name} vestida na modelo`;
   fittingCaption.textContent = product.name;
-  updateFittingZoom(zoomed);
+  updateFittingView(fittingView);
   fittingSelection.textContent = outfit[slot]
     ? `${product.name} na personagem.`
     : `${product.name} removida da personagem.`;
@@ -452,7 +456,7 @@ function loadFitting() {
   fittingLoad = import("./fitting.js").then(async ({ createFittingRoom }) => {
     fitting = await createFittingRoom(document.querySelector("#fitting-canvas"));
     fitting.setOutfit(outfit);
-    updateFittingZoom(zoomed);
+    updateFittingView(fittingView);
     fittingState.hidden = true;
     for (const button of fittingControls) button.disabled = false;
   }).catch(() => {
@@ -477,9 +481,11 @@ fittingOutfits.addEventListener("click", (event) => {
 for (const button of fittingControls) {
   button.addEventListener("click", () => {
     if (button === zoomButton) {
-      updateFittingZoom(!zoomed);
+      updateFittingView(fittingView === "garment" ? null : "garment");
+    } else if (button === faceButton) {
+      updateFittingView(fittingView === "head" ? null : "head");
     } else if (button.hasAttribute("data-reset-view")) {
-      updateFittingZoom(false);
+      updateFittingView(null);
       fitting.resetView();
     } else {
       fitting.rotate(Number(button.dataset.rotate));
