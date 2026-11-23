@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f7f4">
+  <meta name="description" content="Streetwaer. Streetwear feminino, caimento oversized e um provador 3D para montar seu look.">
+  <title>Streetwaer — Do asfalto pra rua</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preload" href="assets/archivo-black-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l1 13H4L5 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-diagonal" viewBox="0 0 24 24"><path d="M6 18 18 6M7 6h11v11"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M4 11a8 8 0 1 1 2 6m-2-1v-5h5"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <div class="announcement"><span aria-hidden="true">✷</span> DROP 01 NO AR <span class="announcement-divider" aria-hidden="true">/</span> CONHEÇA A COLEÇÃO <span aria-hidden="true">✷</span></div>
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="#" aria-label="Streetwaer, início">STREETWAER<span aria-hidden="true">✷</span></a>
+      <nav class="main-nav" aria-label="Principal">
+        <a class="current" href="#">Início</a>
+        <a href="#colecao">Loja</a><a href="#provador">Provador 3D</a>
+        <a href="#sobre">Sobre</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button" type="button" data-open-search aria-label="Buscar"><svg><use href="#i-search"/></svg></button>
+        <button class="icon-button bag-button" type="button" data-open-cart aria-label="Sacola, 0 itens"><svg><use href="#i-bag"/></svg><span id="bag-count">0</span></button>
+        <button class="icon-button mobile-menu" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu"><svg><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+    <nav id="mobile-nav" class="mobile-nav" aria-label="Principal no celular" hidden>
+      <a href="#">Início</a><a href="#colecao">Loja</a><a href="#provador">Provador 3D</a><a href="#sobre">Sobre</a>
+    </nav>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-image"></div>
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow hero-eyebrow"><span></span> DROP 01 / ASFALTO</p>
+          <h1 id="hero-title">DO ASFALTO<br><em>PRA RUA.</em></h1>
+          <p class="hero-description">Streetwear feminino, caimento largo e liberdade<br class="desktop-break"> de vestir do seu jeito.</p>
+          <a class="button button-light" href="#colecao">EXPLORAR O DROP <svg><use href="#i-diagonal"/></svg></a>
+          <a class="hero-fitting-link" href="#provador">PROVAR EM 3D <svg><use href="#i-diagonal"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <div class="ticker-group"><span>FEITO PRA RUA</span><b>✷</b><span>SEM UNIFORME</span><b>✷</b><span>STREETWAER</span><b>✷</b><span>DROP 01 / ASFALTO</span><b>✷</b></div>
+        <div class="ticker-group"><span>FEITO PRA RUA</span><b>✷</b><span>SEM UNIFORME</span><b>✷</b><span>STREETWAER</span><b>✷</b><span>DROP 01 / ASFALTO</span><b>✷</b></div>
+        <div class="ticker-group"><span>FEITO PRA RUA</span><b>✷</b><span>SEM UNIFORME</span><b>✷</b><span>STREETWAER</span><b>✷</b><span>DROP 01 / ASFALTO</span><b>✷</b></div>
+        <div class="ticker-group"><span>FEITO PRA RUA</span><b>✷</b><span>SEM UNIFORME</span><b>✷</b><span>STREETWAER</span><b>✷</b><span>DROP 01 / ASFALTO</span><b>✷</b></div>
+      </div>
+    </div>
+
+    <section class="collection container" id="colecao" aria-labelledby="collection-title">
+      <p class="eyebrow collection-label"><span></span> A COLEÇÃO</p>
+      <div class="collection-heading">
+        <h2 id="collection-title">ÚLTIMO DROP<span>.</span></h2>
+        <div class="filters" role="group" aria-label="Filtrar coleção">
+          <button class="filter" aria-pressed="true" data-filter="todos">Todos</button>
+          <button class="filter" aria-pressed="false" data-filter="camisetas">Camisetas</button>
+          <button class="filter" aria-pressed="false" data-filter="moletons">Moletons</button>
+          <button class="filter" aria-pressed="false" data-filter="calcas">Calças</button>
+        </div>
+      </div>
+      <div class="product-grid" id="product-grid"></div>
+      <p class="sr-only" id="filter-status" role="status"></p>
+      <noscript>Ative o JavaScript para explorar a coleção e usar a sacola.</noscript>
+    </section>
+
+    <section class="fitting" id="provador" aria-labelledby="fitting-title">
+      <div class="container fitting-inner">
+        <div class="fitting-header">
+          <p class="eyebrow"><span></span> MONTE SEU LOOK</p>
+          <h2 id="fitting-title" tabindex="-1">PROVADOR <em>3D.</em></h2>
+          <p>Vista as peças na personagem e gire o look para ver o caimento por todos os lados.</p>
+        </div>
+        <div class="fitting-layout">
+          <div class="fitting-stage" id="fitting-stage" aria-busy="true">
+            <div class="fitting-canvas" id="fitting-canvas"></div>
+            <p class="fitting-state" id="fitting-state" role="status">Carregando personagem…</p>
+            <div class="rotation-controls" role="group" aria-label="Girar personagem">
+              <button type="button" class="icon-button rotate-left" data-rotate="-1" aria-label="Girar à esquerda" disabled><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+              <button type="button" class="icon-button" data-reset-view aria-label="Voltar à vista inicial" disabled><svg aria-hidden="true"><use href="#i-rotate"/></svg></button>
+              <button type="button" class="icon-button" data-rotate="1" aria-label="Girar à direita" disabled><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+            </div>
+            <p class="stage-hint">ARRASTE PARA GIRAR</p>
+          </div>
+          <div class="fitting-wardrobe">
+            <h3>Escolha as peças</h3>
+            <p>Combine uma peça de cima com a Baggy Subsolo. Clique novamente para remover uma peça.</p>
+            <div id="fitting-outfits"></div>
+            <p class="sr-only" id="fitting-selection" role="status"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about" id="sobre" aria-labelledby="about-title">
+      <div class="container about-inner">
+        <div>
+          <p class="eyebrow"><span></span> SOBRE A STREETWAER</p>
+          <h2 id="about-title">A RUA É<br>DE TODO MUNDO<span>.</span></h2>
+        </div>
+        <div class="about-copy">
+          <p>A Streetwaer é uma loja independente de streetwear feminino. Nosso primeiro drop reúne camisetas oversized, moletons pesados e calças baggy para montar o look do seu jeito.</p>
+          <a class="text-link" href="#colecao">VER COLEÇÃO <svg><use href="#i-diagonal"/></svg></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a class="brand" href="#" aria-label="Streetwaer, voltar ao início">STREETWAER<span aria-hidden="true">✷</span></a>
+      <p>Moda urbana independente · MEI</p>
+      <a class="text-link" href="#">VOLTAR AO TOPO ↑</a>
+    </div>
+  </footer>
+
+  <dialog class="dialog search-dialog" id="search-dialog" aria-labelledby="search-title">
+    <div class="dialog-head">
+      <h2 id="search-title">Buscar</h2>
+      <button class="icon-button" type="button" data-close aria-label="Fechar busca"><svg><use href="#i-close"/></svg></button>
+    </div>
+    <label class="sr-only" for="search-input">Nome ou tipo de peça</label>
+    <input id="search-input" type="search" placeholder="Busque por camiseta, moletom, cargo…" autocomplete="off">
+    <div id="search-results" class="search-results" aria-live="polite"></div>
+  </dialog>
+
+  <dialog class="dialog product-dialog" id="product-dialog" aria-labelledby="product-title">
+    <button class="icon-button product-close" type="button" data-close aria-label="Fechar detalhes"><svg><use href="#i-close"/></svg></button>
+    <div id="product-detail"></div>
+  </dialog>
+
+  <dialog class="dialog cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
+    <div class="dialog-head">
+      <h2 id="cart-title">Sua sacola</h2>
+      <button class="icon-button" type="button" data-close aria-label="Fechar sacola"><svg><use href="#i-close"/></svg></button>
+    </div>
+    <div id="cart-content"></div>
+  </dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body>
+</html>
