@@ -1,4 +1,5 @@
 import * as THREE from "./assets/vendor/three.module.min.js";
+import { GLTFLoader } from "./assets/vendor/loaders/GLTFLoader.js";
 
 const sphere = new THREE.SphereGeometry(1, 24, 16);
 const material = (color, roughness = 0.83) => new THREE.MeshStandardMaterial({ color, roughness });
@@ -140,7 +141,7 @@ function badge(parent, finish, x, y, z, style) {
 function curlPuff(parent, finish, center, size) {
   oval(parent, finish, center, [size * .82, size * .85, size * .81]);
   const curl = new THREE.IcosahedronGeometry(1, 2);
-  const count = 160;
+  const count = 270;
   const surface = new THREE.InstancedMesh(curl, finish, count);
   const pose = new THREE.Object3D();
   const tint = new THREE.Color();
@@ -151,7 +152,7 @@ function curlPuff(parent, finish, center, size) {
     const distance = size * (.76 + .16 * Math.sin(index * 5.901));
     pose.position.set(center[0] + Math.cos(angle) * radius * distance,
       center[1] + vertical * distance, center[2] + Math.sin(angle) * radius * distance);
-    const width = size * (.14 + .06 * (index % 7) / 6);
+    const width = size * (.104 + .062 * (index % 7) / 6);
     pose.scale.set(width, width * .85, width * 1.13);
     pose.rotation.set(index * .29, angle, index * .38);
     pose.updateMatrix();
@@ -197,96 +198,38 @@ function posedLeg(parent, side) {
     : [.042, .11, .033]);
 }
 
-function makeCharacter(model) {
-  const skin = material(0x86503c, .64);
-  const shadowSkin = material(0x603629, .76);
-  const cheek = material(0x8a4a39, .69);
-  const lash = material(0x291c1c, .78);
-  const lips = material(0x682f31, .51);
-  const lowerLip = material(0x894c43, .56);
-  const hair = material(0x211815, .67);
-  const curls = material(0x2f2119, .72);
-  const eyes = material(0xcfb6a9, .45);
-  const pupils = material(0x281815, .45);
-  const earrings = new THREE.MeshStandardMaterial({ color: 0xffcc83, metalness: .62, roughness: .31 });
-  const sock = material(0xd7cdc3);
-  const sole = material(0xb3a6a3);
+function styleAvatar(model) {
+  const hair = material(0x221511, .72);
+  const eyeWhite = material(0xb7a297, .48);
+  const iris = material(0x35201a, .48);
+  const pupil = material(0x100c0b, .29);
+  const earrings = new THREE.MeshStandardMaterial({ color: 0xdca765, metalness: .52, roughness: .28 });
+  const sock = material(0x29252a);
+  const sole = material(0xb3aaa8);
   const leather = material(0x27252b, .53);
-  const laces = material(0x8d7f84);
-
-  sculpt(model, skin, [
-    [1.54, 0, 0], [1.61, .31, .18], [1.79, .329, .20], [2.02, .255, .148],
-    [2.22, .259, .153], [2.42, .32, .202, 0, .026], [2.62, .337, .158],
-    [2.74, .214, .108], [2.79, .114, .104], [2.99, .11, .095], [3.01, 0, 0]
-  ]);
-  const head = posedPart(model, [0, 2.96, .07], [-.035, .089, .054]);
-  sculpt(head, skin, [
-    [2.96, 0, 0, 0, .07], [2.99, .103, .099, 0, .066], [3.045, .158, .137, 0, .054], [3.115, .189, .154, 0, .04],
-    [3.18, .216, .172, 0, .028], [3.24, .224, .179, 0, .020], [3.30, .225, .182, 0, .015], [3.41, .209, .165],
-    [3.51, .141, .114], [3.545, 0, 0]
-  ]);
-  oval(head, hair, [0, 3.35, -.063], [.246, .226, .204]);
-  sculpt(head, hair, [
-    [3.315, .218, .157, 0, -.022], [3.365, .235, .183, 0, -.007],
-    [3.43, .235, .192, 0, -.006], [3.515, .170, .153, 0, -.014], [3.554, .112, .133, 0, -.024], [3.583, 0, 0, 0, -.035]
-  ]);
-  oval(head, skin, [0, 3.188, .204], [.031, .067, .047]);
-  oval(head, skin, [0, 3.143, .235], [.045, .031, .036]);
-  oval(head, lowerLip, [0, 3.066, .183], [.059, .015, .028]);
-  stitch(head, lips, [[-.054, 3.077, .183], [-.019, 3.086, .205],
-    [0, 3.082, .211], [.019, 3.086, .205], [.054, 3.077, .183]], .008);
-  stitch(head, shadowSkin, [[-.057, 3.074, .187], [0, 3.073, .211], [.057, 3.074, .187]], .003);
+  const laces = material(0x81777a);
 
   for (const side of [-1, 1]) {
-    oval(head, skin, [side * .225, 3.176, .008], [.039, .065, .04], side * -.19);
-    oval(head, shadowSkin, [side * .242, 3.18, .041], [.014, .032, .008]);
-    oval(head, skin, [side * .034, 3.126, .221], [.019, .016, .024]);
-    oval(head, shadowSkin, [side * .027, 3.118, .24], [.010, .006, .010]);
-    const hoop = new THREE.Mesh(new THREE.TorusGeometry(.047, .0045, 8, 32), earrings);
-    hoop.position.set(side * .239, 3.085, .033);
-    hoop.rotation.y = side * .56;
-    head.add(hoop);
-    oval(head, cheek, [side * .132, 3.165, .155], [.068, .043, .029], side * .19);
-    oval(head, eyes, [side * .099, 3.232, .183], [.054, .014, .021], side * .105);
-    oval(head, pupils, [side * .096, 3.233, .200], [.016, .016, .010]);
-    oval(head, eyes, [side * .096 - .006, 3.239, .209], [.003, .003, .002]);
-    stitch(head, lash, [
-      [side * .045, 3.241, .202], [side * .092, 3.256, .206], [side * .145, 3.243, .188]
-    ], .005);
-    stitch(head, hair, [
-      [side * .04, 3.285, .196], [side * .094, 3.304, .190], [side * .153, 3.287, .174]
-    ], .009);
+    const x = side * .0734;
+    oval(model, eyeWhite, [x, 3.2486, .1853], [.0375, .038, .0396]);
+    oval(model, iris, [x + .002, 3.248, .2165], [.0182, .018, .0108]);
+    oval(model, pupil, [x + .002, 3.248, .2248], [.008, .008, .004]);
 
-    curlPuff(head, curls, [side * .248, 3.504, -.125], side < 0 ? .186 : .173);
-    stitch(head, hair, [[side * .022, 3.417, .164], [side * .059, 3.452, .172],
-      [side * .111, 3.47, .157]], .006);
-    for (let index = 0; index < 7; index += 1) {
-      const x = side * (.019 + index * .025);
-      stitch(head, curls, [[x, 3.403 - index * .009, .164],
-        [x + side * .014, 3.430 - index * .007, .177], [x + side * .028, 3.45, .160]], .0035);
-    }
+    const hoop = new THREE.Mesh(new THREE.TorusGeometry(.050, .0045, 10, 42), earrings);
+    hoop.scale.set(.80, 1.13, 1);
+    hoop.position.set(side * .198, 3.138, .123);
+    hoop.rotation.y = side * .49;
+    model.add(hoop);
 
-    const arm = posedArm(model, side);
-    sculpt(arm, skin, [
-      [1.44, 0, 0, side * .51, .065], [1.47, .055, .043, side * .51, .065],
-      [1.57, .074, .050, side * .528, .065], [1.69, .055, .055, side * .523, .048],
-      [1.88, .073, .070, side * .544, .048], [2.08, .087, .082, side * .545, .018],
-      [2.30, .103, .095, side * .462], [2.52, .123, .111, side * .380],
-      [2.65, .074, .077, side * .322], [2.695, 0, 0, side * .312]
-    ]);
-    oval(arm, skin, [side * .484, 1.564, .091], [.024, .067, .027], side * -.22);
-    for (let finger = 0; finger < 4; finger += 1) {
-      const x = side * (.496 + finger * .022);
-      oval(arm, skin, [x, 1.467 + Math.abs(finger - 1) * .011, .070 - finger * .009],
-        [.0148, .053 - Math.abs(finger - 1) * .007, .018], side * -.09);
+    curlPuff(model, hair, [side * .213, 3.578 + side * .018, -.035], side < 0 ? .192 : .178);
+    for (let strand = 0; strand < 3; strand += 1) {
+      const x = side * (.081 + strand * .042);
+      stitch(model, hair, [[x, 3.490 + strand * .015, .203 - strand * .025],
+        [x + side * .029, 3.522 + strand * .013, .202 - strand * .023],
+        [x + side * .047, 3.550 + strand * .01, .175 - strand * .025]], .0026);
     }
 
     const leg = posedLeg(model, side);
-    sculpt(leg, skin, [
-      [.11, 0, 0, side * .246], [.18, .072, .068, side * .246], [.35, .077, .08, side * .239],
-      [.58, .108, .103, side * .226], [.86, .105, .111, side * .206], [1.19, .133, .135, side * .177, .022],
-      [1.55, .151, .157, side * .155], [1.80, .154, .158, side * .149], [1.85, 0, 0, side * .149]
-    ]);
     oval(leg, sock, [side * .245, .218, -.006], [.082, .14, .083]);
     oval(leg, sole, [side * .254, .064, .089], [.132, .055, .233]);
     oval(leg, leather, [side * .253, .129, .089], [.126, .097, .222]);
@@ -316,13 +259,15 @@ function makeWardrobe(model) {
   const tank = new THREE.Group();
   model.add(tank);
   sculpt(tank, warmWhite, [
-    [2.10, .266, .158], [2.16, .274, .173], [2.36, .301, .199, 0, .029],
-    [2.49, .288, .189, 0, .025], [2.55, .257, .151, 0, .026]
+    [2.055, .233, .159, 0, .067], [2.14, .24, .163, 0, .067],
+    [2.27, .274, .173, 0, .059], [2.34, .302, .188, 0, .062],
+    [2.42, .312, .197, 0, .048], [2.49, .304, .187, 0, .030],
+    [2.55, .278, .160, 0, .013]
   ]);
   for (const side of [-1, 1]) {
     stitch(tank, warmWhite, [
-      [side * .216, 2.52, .132], [side * .226, 2.675, .091],
-      [side * .227, 2.702, -.013], [side * .216, 2.52, -.116]
+      [side * .212, 2.52, .151], [side * .214, 2.660, .088],
+      [side * .202, 2.734, -.023], [side * .208, 2.54, -.128]
     ], .034);
   }
 
@@ -495,7 +440,9 @@ function makeStage(scene) {
   scene.add(shadow);
 }
 
-export function createFittingRoom(container) {
+export async function createFittingRoom(container) {
+  const asset = new URL("./assets/avatar/streetwaer.glb", import.meta.url);
+  const { scene: character } = await new GLTFLoader().loadAsync(asset.href);
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.7));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -517,11 +464,13 @@ export function createFittingRoom(container) {
 
   const avatar = new THREE.Group();
   scene.add(avatar);
-  makeCharacter(avatar);
+  avatar.add(character);
+  styleAvatar(avatar);
   const wardrobe = makeWardrobe(avatar);
+  const innerTorso = character.getObjectByName("TorsoUnderOuterwear");
 
   const camera = new THREE.PerspectiveCamera(30, 1, .1, 40);
-  const initialAngle = -.26;
+  const initialAngle = -.15;
   const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
   let goal = initialAngle;
   let frame;
@@ -543,8 +492,8 @@ export function createFittingRoom(container) {
 
   function frameCamera() {
     if (!focus) {
-      camera.position.set(0, 2.45, Math.max(8.47, 4.65 / camera.aspect));
-      camera.lookAt(0, 1.61, 0);
+      camera.position.set(0, 2.45, Math.max(8.72, 4.65 / camera.aspect));
+      camera.lookAt(0, 1.68, 0);
       return;
     }
     const height = focus === "lower" ? .91 : 2.45;
@@ -585,6 +534,7 @@ export function createFittingRoom(container) {
       wardrobe.tee.visible = outfit.upper === "camiseta-asfalto";
       wardrobe.hoodie.visible = outfit.upper === "moletom-concreto";
       wardrobe.tank.visible = !outfit.upper;
+      innerTorso.visible = !outfit.upper;
       wardrobe.baggy.visible = outfit.lower === "cargo-subsolo";
       wardrobe.shorts.visible = !outfit.lower;
       draw();

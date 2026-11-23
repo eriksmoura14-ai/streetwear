@@ -449,9 +449,10 @@ function wearProduct(product, toggle = true) {
 function loadFitting() {
   if (fittingLoad) return;
   fittingStage.setAttribute("aria-busy", "true");
-  fittingLoad = import("./fitting.js").then(({ createFittingRoom }) => {
-    fitting = createFittingRoom(document.querySelector("#fitting-canvas"));
+  fittingLoad = import("./fitting.js").then(async ({ createFittingRoom }) => {
+    fitting = await createFittingRoom(document.querySelector("#fitting-canvas"));
     fitting.setOutfit(outfit);
+    updateFittingZoom(zoomed);
     fittingState.hidden = true;
     for (const button of fittingControls) button.disabled = false;
   }).catch(() => {
@@ -498,3 +499,11 @@ for (const button of fittingModes) {
     if (use3D) loadFitting();
   });
 }
+
+const fittingObserver = new IntersectionObserver(([entry], observer) => {
+  if (entry.isIntersecting) {
+    loadFitting();
+    observer.disconnect();
+  }
+}, { rootMargin: "260px" });
+fittingObserver.observe(fittingStage);

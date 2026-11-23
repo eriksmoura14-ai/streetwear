@@ -88,18 +88,18 @@
         <div class="fitting-header">
           <p class="eyebrow"><span></span> MONTE SEU LOOK</p>
           <h2 id="fitting-title" tabindex="-1">PROVE O <em>LOOK.</em></h2>
-          <p>Combine as peças na modelo do catálogo.</p>
+          <p>Vista as peças na personagem 3D e gire para ver o look de todos os ângulos.</p>
         </div>
         <div class="fitting-layout">
           <div class="fitting-view">
             <div class="fitting-modes" role="group" aria-label="Visualização do look">
-              <button type="button" data-fitting-mode="photo" aria-pressed="true" aria-controls="fitting-photo">Foto da modelo</button>
-              <button type="button" data-fitting-mode="3d" aria-pressed="false" aria-controls="fitting-stage">Girar em 3D</button>
+              <button type="button" data-fitting-mode="photo" aria-pressed="false" aria-controls="fitting-photo">Foto da modelo</button>
+              <button type="button" data-fitting-mode="3d" aria-pressed="true" aria-controls="fitting-stage">Girar em 3D</button>
             </div>
-            <figure class="fitting-photo" id="fitting-photo">
+            <figure class="fitting-photo" id="fitting-photo" hidden>
               <img id="fitting-look-image" src="assets/look-camiseta-baggy.webp" alt="Modelo vestindo Camiseta Asfalto e Baggy Subsolo" width="675" height="900" loading="lazy">
             </figure>
-            <div class="fitting-stage" id="fitting-stage" aria-busy="false" hidden>
+            <div class="fitting-stage" id="fitting-stage" aria-busy="true">
               <div class="fitting-canvas" id="fitting-canvas"></div>
               <p class="fitting-state" id="fitting-state" role="status">Carregando personagem…</p>
               <div class="rotation-controls" role="group" aria-label="Girar personagem">
@@ -115,7 +115,7 @@
             <h3>Escolha as peças</h3>
             <p>Combine uma peça de cima com a Baggy Subsolo. Clique novamente para remover uma peça.</p>
             <div id="fitting-outfits"></div>
-            <details class="fitting-reference" hidden>
+            <details class="fitting-reference">
               <summary>Comparar com a foto do catálogo</summary>
               <figure>
                 <img id="fitting-reference-image" src="assets/camiseta.webp" alt="Camiseta Asfalto vestida na modelo" width="800" height="1000" loading="lazy">

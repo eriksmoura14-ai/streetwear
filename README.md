@@ -10,7 +10,7 @@ Na raiz do projeto, execute:
 python3 -m http.server 8000
 ```
 
-Abra `http://localhost:8000` no navegador. O provador abre em modo fotográfico. A visualização rotativa usa WebGL 2 e carrega quando o visitante seleciona **Girar em 3D**. As fotos, as fontes e o Three.js são servidos pelo próprio site.
+Abra `http://localhost:8000` no navegador. O provador abre em 3D e carrega a personagem quando a seção se aproxima da tela. A visualização rotativa usa WebGL 2. O botão **Foto da modelo** abre as combinações fotográficas do catálogo. As fotos, as fontes e o Three.js são servidos pelo próprio site.
 
 ## Publicar no Render
 
@@ -23,7 +23,8 @@ O Blueprint cria um **Static Site** e publica a pasta `dist`, montada pelo coman
 ## Conteúdo da loja
 
 - `app.js` contém os produtos, preços e tamanhos de exemplo e controla filtros, busca, sacola e seleção de roupas.
-- `fitting.js` modela a personagem e as peças 3D. Camiseta e moletom ocupam a parte de cima, e a baggy pode ser combinada com ambas.
+- `fitting.js` carrega a malha humana em glTF e modela as peças 3D. Camiseta e moletom ocupam a parte de cima, e a baggy pode ser combinada com ambas.
+- A malha em `assets/avatar/streetwaer.glb` deriva dos [assets do MakeHuman 1.3.0](https://github.com/makehumancommunity/makehuman/tree/v1.3.0), disponibilizados sob CC0 1.0.
 - `assets/` contém as fotos das peças, as composições ilustrativas do provador, as fontes e a biblioteca 3D, com as licenças correspondentes.
 
 A sacola é salva no navegador e gera um resumo copiável. Para vender pelo site, substitua os dados ilustrativos pelas informações comerciais reais e integre pedidos, pagamento e frete.
