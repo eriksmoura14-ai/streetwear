@@ -138,68 +138,6 @@ function badge(parent, finish, x, y, z, style) {
   parent.add(mark);
 }
 
-function curlPuff(parent, finish, center, size) {
-  oval(parent, finish, center, [size * .76, size * .79, size * .73]);
-  const curl = new THREE.TorusGeometry(.64, .31, 5, 14, Math.PI * 1.72);
-  const count = 630;
-  const surface = new THREE.InstancedMesh(curl, finish, count);
-  const pose = new THREE.Object3D();
-  const tint = new THREE.Color();
-  for (let index = 0; index < count; index += 1) {
-    const vertical = 1 - 2 * (index + .5) / count;
-    const radius = Math.sqrt(1 - vertical * vertical);
-    const angle = index * 2.39996;
-    const bunch = Math.sin(3 * angle + vertical * 11) * Math.cos(vertical * 13);
-    const distance = size * (.84 + .07 * bunch + .075 * Math.sin(index * 5.901));
-    pose.position.set(center[0] + Math.cos(angle) * radius * distance * 1.04,
-      center[1] + vertical * distance * .91, center[2] + Math.sin(angle) * radius * distance * .96);
-    const width = size * (.078 + .078 * (index % 11) / 10);
-    pose.scale.set(width, width * (.88 + .13 * Math.cos(index)), width * .94);
-    pose.rotation.set(index * .29, angle, index * .38);
-    pose.updateMatrix();
-    surface.setMatrixAt(index, pose.matrix);
-    surface.setColorAt(index, tint.setScalar(.66 + .34 * (index % 15) / 14));
-  }
-  parent.add(surface);
-}
-
-function makeEye() {
-  const geometry = new THREE.SphereGeometry(1, 64, 48);
-  const points = geometry.getAttribute("position");
-  const colors = [];
-  const sclera = new THREE.Color(0xbeb0a5);
-  const corner = new THREE.Color(0x986f66);
-  const iris = new THREE.Color(0x563927);
-  const rim = new THREE.Color(0x37241d);
-  const pupil = new THREE.Color(0x13100f);
-  const whitening = THREE.MathUtils.smoothstep;
-  const tone = new THREE.Color();
-
-  for (let i = 0; i < points.count; i += 1) {
-    const x = points.getX(i);
-    const y = points.getY(i);
-    const radius = Math.hypot(x - .022, y);
-    const front = points.getZ(i) > 0;
-    tone.copy(sclera).lerp(corner, .38 * whitening(Math.abs(x), .48, .97));
-
-    if (front && radius < .45) {
-      const angle = Math.atan2(y, x - .022);
-      const fibers = .86 + .11 * Math.sin(37 * angle + 14 * radius) + .08 * Math.sin(23 * angle - 8 * radius);
-      tone.copy(iris).multiplyScalar(fibers);
-      tone.lerp(rim, whitening(radius, .31, .41));
-      tone.lerp(pupil, 1 - whitening(radius, .140, .181));
-    }
-
-    colors.push(tone.r, tone.g, tone.b);
-  }
-
-  geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
-  const finish = new THREE.MeshPhysicalMaterial({
-    vertexColors: true, roughness: .36, clearcoat: .68, clearcoatRoughness: .18
-  });
-  return new THREE.Mesh(geometry, finish);
-}
-
 function panel(parent, finish, outline, position, angle = 0, depth = .014) {
   const shape = new THREE.Shape();
   shape.moveTo(...outline[0]);
@@ -236,33 +174,13 @@ function posedLeg(parent, side) {
     : [.037, .16, -.041]);
 }
 
-function styleAvatar(model) {
-  const hair = material(0x251811, .79);
-  const eye = makeEye();
-  const earrings = new THREE.MeshStandardMaterial({ color: 0xdca765, metalness: .52, roughness: .28 });
+function makeShoes(model) {
   const sock = material(0x29252a);
   const sole = material(0xb3aaa8);
   const leather = material(0x27252b, .53);
   const laces = material(0x81777a);
-  const headAccessories = new THREE.Group();
-  headAccessories.position.y = -.115;
-  model.add(headAccessories);
 
   for (const side of [-1, 1]) {
-    const x = side * .0734;
-    const eyeball = eye.clone();
-    eyeball.position.set(x, 3.2481, .1855);
-    eyeball.scale.set(.0345, .0345, .0383);
-    headAccessories.add(eyeball);
-
-    const hoop = new THREE.Mesh(new THREE.TorusGeometry(.050, .0045, 10, 42), earrings);
-    hoop.scale.set(.80, 1.13, 1);
-    hoop.position.set(side * .193, 3.131, .119);
-    hoop.rotation.y = side * .49;
-    headAccessories.add(hoop);
-
-    curlPuff(headAccessories, hair, [side * .206, 3.480 + side * .012, -.017], side < 0 ? .173 : .166);
-
     const leg = posedLeg(model, side);
     oval(leg, sock, [side * .245, .218, -.006], [.082, .14, .083]);
     oval(leg, sole, [side * .254, .064, .089], [.132, .055, .233]);
@@ -482,7 +400,7 @@ function makeStage(scene) {
 }
 
 export async function createFittingRoom(container) {
-  const asset = new URL("./assets/avatar/streetwaer-portrait-v2.glb", import.meta.url);
+  const asset = new URL("./assets/avatar/streetwaer-humanforge.glb", import.meta.url);
   const { scene: character } = await new GLTFLoader().loadAsync(asset.href);
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.7));
@@ -502,25 +420,30 @@ export async function createFittingRoom(container) {
   fill.position.set(2, 4, -3);
   scene.add(fill);
   const portraitFill = new THREE.DirectionalLight(0xfff6ee, 0);
-  portraitFill.position.set(.8, 3.18, 5);
+  portraitFill.position.set(0, 3.61, 5);
   portraitFill.target.position.set(0, 3.12, 0);
   scene.add(portraitFill, portraitFill.target);
+  const portraitRim = new THREE.DirectionalLight(0xf6e6d8, 0);
+  portraitRim.position.set(0, 4.02, -3.6);
+  portraitRim.target.position.set(0, 3.12, 0);
+  scene.add(portraitRim, portraitRim.target);
   makeStage(scene);
 
   const avatar = new THREE.Group();
   scene.add(avatar);
   avatar.add(character);
-  styleAvatar(avatar);
+  makeShoes(avatar);
   const wardrobe = makeWardrobe(avatar);
   const innerTorso = character.getObjectByName("TorsoUnderOuterwear");
 
   const camera = new THREE.PerspectiveCamera(30, 1, .1, 40);
-  const initialAngle = -.24;
+  const initialAngle = 0;
   const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
   let goal = initialAngle;
   let frame;
   let pointer;
   let focus;
+  let outfitAngle = initialAngle;
   avatar.rotation.y = goal;
 
   function render() {
@@ -538,8 +461,10 @@ export async function createFittingRoom(container) {
   function frameCamera() {
     const portrait = focus === "head";
     camera.fov = portrait ? 25 : 30;
-    key.intensity = portrait ? 1.84 : 2.7;
-    portraitFill.intensity = portrait ? .86 : 0;
+    key.intensity = portrait ? 0 : 2.7;
+    fill.intensity = portrait ? 0 : 1.55;
+    portraitFill.intensity = portrait ? 2.35 : 0;
+    portraitRim.intensity = portrait ? .72 : 0;
     camera.updateProjectionMatrix();
     if (!focus) {
       camera.position.set(0, 2.22, Math.max(8.48, 4.65 / camera.aspect));
@@ -547,8 +472,8 @@ export async function createFittingRoom(container) {
       return;
     }
     if (portrait) {
-      camera.position.set(0, 3.117, Math.max(2.32, 1.59 / camera.aspect));
-      camera.lookAt(0, 3.121, .031);
+      camera.position.set(0, 3.121, Math.max(2.32, 1.59 / camera.aspect));
+      camera.lookAt(0, 3.121, 0);
       return;
     }
     const height = focus === "lower" ? .91 : 2.45;
@@ -583,6 +508,11 @@ export async function createFittingRoom(container) {
     canvas.classList.remove("dragging");
   });
 
+  function nearestTurn(angle) {
+    const fullTurn = Math.PI * 2;
+    return angle + Math.round((avatar.rotation.y - angle) / fullTurn) * fullTurn;
+  }
+
   return {
     setOutfit(outfit) {
       wardrobe.tee.visible = outfit.upper === "camiseta-asfalto";
@@ -595,6 +525,12 @@ export async function createFittingRoom(container) {
     },
     focusPiece(slot) {
       if (focus === slot) return;
+      if (slot === "head") {
+        outfitAngle = goal;
+        goal = nearestTurn(0);
+      } else if (focus === "head") {
+        goal = nearestTurn(outfitAngle);
+      }
       focus = slot;
       frameCamera();
       draw();
@@ -604,8 +540,7 @@ export async function createFittingRoom(container) {
       draw();
     },
     resetView() {
-      const fullTurn = Math.PI * 2;
-      goal = initialAngle + Math.round((avatar.rotation.y - initialAngle) / fullTurn) * fullTurn;
+      goal = nearestTurn(initialAngle);
       draw();
     }
   };

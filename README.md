@@ -24,7 +24,7 @@ O Blueprint cria um **Static Site** e publica a pasta `dist`, montada pelo coman
 
 - `app.js` contém os produtos, preços e tamanhos de exemplo e controla filtros, busca, sacola e seleção de roupas.
 - `fitting.js` carrega a malha humana em glTF e modela as peças 3D. Camiseta e moletom ocupam a parte de cima, e a baggy pode ser combinada com ambas.
-- A malha em `assets/avatar/streetwaer-portrait-v2.glb` deriva dos [assets do MakeHuman 1.3.0](https://github.com/makehumancommunity/makehuman/tree/v1.3.0), disponibilizados sob CC0 1.0.
+- O modelo em `assets/avatar/streetwaer-humanforge.glb` usa os assets femininos prontos do [HumanForge v0.5.0](https://github.com/abdulrehman043/humanforge/tree/v0.5.0), com licença CC0 1.0. Veja a [proveniência dos assets](assets/avatar/HUMANFORGE.md).
 - `assets/` contém as fotos das peças, as composições ilustrativas do provador, as fontes e a biblioteca 3D, com as licenças correspondentes.
 
 A sacola é salva no navegador e gera um resumo copiável. Para vender pelo site, substitua os dados ilustrativos pelas informações comerciais reais e integre pedidos, pagamento e frete.
