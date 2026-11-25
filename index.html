@@ -8,6 +8,9 @@
     <title>NOIR STREET | Streetwear feminino e coleção de moda urbana</title>
     <meta name="description" content="Explore o streetwear feminino da NOIR STREET: blusas oversized, calças cargo, bandanas e tênis. Veja os tamanhos disponíveis e monte seu pedido pelo WhatsApp.">
 
+    <link rel="canonical" href="https://eriksmoura14-ai.github.io/streetwear/">
+    <link rel="preload" as="image" href="img/campanha-streetwear-look-amarelo.webp">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -61,6 +64,7 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid #292020;
+            gap: 10px 15px;
             position: sticky;
             top: 0;
             z-index: 10;
@@ -78,7 +82,9 @@
 
         nav {
             display: flex;
-            gap: 30px;
+            gap: 6px 20px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         nav a {
@@ -131,7 +137,7 @@
                     #090909dd 43%,
                     #09090922 100%
                 ),
-                url("https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1600")
+                url("img/campanha-streetwear-look-amarelo.webp")
                 center 35%/cover;
         }
 
@@ -322,7 +328,7 @@
 
             background:
                 linear-gradient(#751321bb, #090909bb),
-                url("https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=1400")
+                url("img/editorial-streetwear-camiseta-vermelha.webp")
                 center/cover;
         }
 
@@ -417,6 +423,16 @@
             padding: 30px;
             color: #888;
             font-size: 13px;
+        }
+
+        footer nav {
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        footer nav a {
+            color: #f5f1ef;
+            padding: 4px 0;
         }
 
         /* CARRINHO */
@@ -535,7 +551,8 @@
                 order: 1;
                 flex: 0 0 100%;
                 flex-wrap: wrap;
-                gap: 4px 15px;
+                gap: 2px 12px;
+                justify-content: flex-start;
             }
 
             nav a {
@@ -543,7 +560,7 @@
             }
 
             section[id] {
-                scroll-margin-top: 125px;
+                scroll-margin-top: 160px;
             }
 
             .hero {
@@ -596,10 +613,13 @@
         <a href="#inicio" class="logo" aria-label="NOIR STREET, início">NOIR<span>.</span></a>
 
         <nav aria-label="Menu principal">
-            <a href="#inicio">Início</a>
-            <a href="#produtos">Produtos</a>
-            <a href="#pagamento">Pagamento</a>
-            <a href="#contato">Contato</a>
+            <a href="./">Início</a>
+            <a href="./#produtos">Produtos</a>
+            <a href="./#pagamento">Pagamento</a>
+            <a href="./#contato">Contato</a>
+            <a href="pages/guia-de-tamanhos.html">Guia de tamanhos</a>
+            <a href="pages/como-pedir.html">Como pedir</a>
+            <a href="pages/sobre.html">Sobre a loja</a>
         </nav>
 
         <button class="cart-button" onclick="toggleCart()">
@@ -667,7 +687,7 @@
 
             <h2>THE STREET EDIT</h2>
 
-            <p>Peças urbanas. Personalidade sem limites.</p>
+            <p>Fotos ilustrativas. Consulte o <a href="pages/guia-de-tamanhos.html">guia de tamanhos</a> antes de escolher e veja <a href="pages/como-pedir.html">como fazer o pedido</a>.</p>
 
         </div>
 
@@ -709,7 +729,7 @@
 
             <h2>NOT MADE TO FIT IN.</h2>
 
-            <p>Seu estilo não precisa de aprovação.</p>
+            <p>Conheça mais <a href="pages/sobre.html">sobre a NOIR STREET</a>.</p>
 
         </div>
 
@@ -862,6 +882,16 @@
 
         <p><strong>NOIR STREET</strong></p>
 
+        <nav aria-label="Menu do rodapé">
+            <a href="./">Início</a>
+            <a href="./#produtos">Produtos</a>
+            <a href="./#pagamento">Pagamento</a>
+            <a href="./#contato">Contato</a>
+            <a href="pages/guia-de-tamanhos.html">Guia de tamanhos</a>
+            <a href="pages/como-pedir.html">Como pedir</a>
+            <a href="pages/sobre.html">Sobre a loja</a>
+        </nav>
+
         <p>© 2026 NOIR STREET — TODOS OS DIREITOS RESERVADOS.</p>
 
         <p>WOMEN'S STREETWEAR • URBAN CULTURE</p>
@@ -921,7 +951,10 @@
                 name: "Oversized Red",
                 category: "blusa",
                 price: 129.90,
-                image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=700"
+                image: "img/look-urbano-amarelo.webp",
+                imageAlt: "Modelo com conjunto amarelo e tênis branco em uma área externa",
+                imageWidth: 592,
+                imageHeight: 820
             },
 
             {
@@ -929,7 +962,10 @@
                 name: "Black Baby Tee",
                 category: "blusa",
                 price: 89.90,
-                image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=700"
+                image: "img/casaco-azul-em-frente-a-catedral.webp",
+                imageAlt: "Modelo com casaco azul e bolsa rosa em frente a uma catedral",
+                imageWidth: 547,
+                imageHeight: 820
             },
 
             {
@@ -937,7 +973,10 @@
                 name: "Urban Hoodie",
                 category: "blusa",
                 price: 189.90,
-                image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=700"
+                image: "img/camiseta-vermelha-e-jaqueta-preta.webp",
+                imageAlt: "Modelo com camiseta vermelha, jaqueta preta e óculos coloridos",
+                imageWidth: 547,
+                imageHeight: 820
             },
 
             {
@@ -948,7 +987,10 @@
 
                 /* IMAGEM DA CALÇA CORRIGIDA */
 
-                image: "https://img-edg.joomcdn.net/22d961a098152b0d931214a2ec9dfede329459a8_original.jpeg"
+                image: "img/calca-cargo-preta-com-detalhes-vermelhos.webp",
+                imageAlt: "Calça cargo preta com detalhes vermelhos e bolsos laterais",
+                imageWidth: 700,
+                imageHeight: 700
             },
 
             {
@@ -956,7 +998,10 @@
                 name: "Wide Leg Black",
                 category: "calca",
                 price: 159.90,
-                image: "https://fulmo-img-server.com/streety/04947fff15394fb284757d7dce0dff1c.jpg"
+                image: "img/calca-larga-preta-com-bolsos.webp",
+                imageAlt: "Calça larga preta com bolsos laterais, combinada com tênis branco",
+                imageWidth: 615,
+                imageHeight: 820
             },
 
             {
@@ -964,7 +1009,10 @@
                 name: "Bandana Red",
                 category: "bandana",
                 price: 39.90,
-                image: "https://images.unsplash.com/photo-1521369909029-2afed882baee?w=700"
+                image: "img/bone-cinza-estonado.webp",
+                imageAlt: "Boné cinza escuro com acabamento estonado, sobre uma mesa clara",
+                imageWidth: 700,
+                imageHeight: 467
             },
 
             {
@@ -972,7 +1020,10 @@
                 name: "Bandana Dark",
                 category: "bandana",
                 price: 39.90,
-                image: "https://images.unsplash.com/photo-1584030373081-f37b7bb4fa8e?w=700"
+                image: "img/blusa-clara-em-cabide.webp",
+                imageAlt: "Blusa clara de manga comprida em um cabide",
+                imageWidth: 551,
+                imageHeight: 820
             },
 
             {
@@ -980,7 +1031,10 @@
                 name: "Red Street Sneakers",
                 category: "tenis",
                 price: 299.90,
-                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700"
+                image: "img/tenis-vermelho-fundo-vermelho.webp",
+                imageAlt: "Tênis esportivo vermelho com sola branca sobre fundo vermelho",
+                imageWidth: 700,
+                imageHeight: 467
             },
 
             {
@@ -988,7 +1042,10 @@
                 name: "Urban Classic",
                 category: "tenis",
                 price: 279.90,
-                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700"
+                image: "img/tenis-vermelho-fundo-vermelho.webp",
+                imageAlt: "Tênis esportivo vermelho com sola branca sobre fundo vermelho",
+                imageWidth: 700,
+                imageHeight: 467
             },
 
             {
@@ -996,7 +1053,10 @@
                 name: "Black Sneakers",
                 category: "tenis",
                 price: 319.90,
-                image: "https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?w=700"
+                image: "img/fileira-de-tenis-em-varias-cores.webp",
+                imageAlt: "Fileira de tênis vistos por trás, com pares pretos, brancos e vermelhos",
+                imageWidth: 700,
+                imageHeight: 467
             }
 
         ];
@@ -1026,10 +1086,10 @@
 
                         <img
                             src="${p.image}"
-                            alt="${p.name}"
+                            alt="${p.imageAlt}"
+                            width="${p.imageWidth}" height="${p.imageHeight}"
                             loading="lazy"
                             decoding="async"
-                            onerror="this.onerror=null;this.src='https://placehold.co/600x600/171313/ffffff?text=NOIR+STREET'"
                         >
 
                         <div class="product-info">
