@@ -6,7 +6,7 @@ const products = [
     color: "Preto estonado",
     price: 119.90,
     image: "assets/camiseta.webp",
-    tag: "OVERSIZED",
+    imageAlt: "Frente da camiseta oversized preta estonada com estampa circular no peito",
     sizes: ["P", "M", "G", "GG"],
     description: "Camiseta oversized em preto estonado, com ombros caídos e estampa discreta no peito."
   },
@@ -17,7 +17,7 @@ const products = [
     color: "Vinho",
     price: 219.90,
     image: "assets/moletom.webp",
-    tag: "DROP 01",
+    imageAlt: "Moletom vinho de frente, com capuz, mangas amplas e bolso canguru",
     sizes: ["P", "M", "G", "GG"],
     description: "Moletom amplo na cor vinho, com capuz, bolso canguru e estampa no peito."
   },
@@ -28,7 +28,8 @@ const products = [
     color: "Preto",
     price: 199.90,
     image: "assets/baggy.webp",
-    tag: "WIDE LEG",
+    cardImage: "assets/baggy-vitrine.webp",
+    imageAlt: "Calça baggy preta da cintura à barra, com bolsos cargo e pernas largas",
     sizes: ["36", "38", "40", "42", "44"],
     description: "Calça jeans baggy em preto estonado, com pernas extralargas e bolsos cargo laterais."
   }
@@ -53,6 +54,11 @@ const mobileNav = document.querySelector("#mobile-nav");
 
 const icon = (name) => `<svg aria-hidden="true"><use href="#i-${name}"/></svg>`;
 const findProduct = (id) => products.find((product) => product.id === id);
+const featuredIds = ["cargo-subsolo", "moletom-concreto", "camiseta-asfalto"];
+const collectionProducts = [
+  ...featuredIds.map(findProduct).filter(Boolean),
+  ...products.filter((product) => !featuredIds.includes(product.id))
+];
 let cart = loadCart();
 let toastTimer;
 
@@ -86,21 +92,19 @@ function saveCart() {
 
 function renderProducts(category = "todos") {
   const visibleProducts = category === "todos"
-    ? products
-    : products.filter((product) => product.category === category);
+    ? collectionProducts
+    : collectionProducts.filter((product) => product.category === category);
 
   grid.innerHTML = visibleProducts.map((product) => `
     <article class="product-card">
       <button class="product-image" type="button" data-product="${product.id}" aria-label="Ver ${product.name}">
-        <img src="${product.image}" alt="" width="800" height="1000">
-        ${product.tag ? `<span class="product-tag">${product.tag}</span>` : ""}
-        <span class="product-arrow">${icon("diagonal")}</span>
+        <img src="${product.cardImage ?? product.image}" alt="${product.imageAlt}" width="800" height="1000" loading="lazy" decoding="async">
       </button>
       <div class="product-meta">
         <h3><button type="button" data-product="${product.id}">${product.name}</button></h3>
-        <strong>${currency.format(product.price)}</strong>
+        <p class="product-tone">${product.color}</p>
+        <p class="product-card-price">${currency.format(product.price)}</p>
       </div>
-      <p class="product-tone">${product.color}</p>
     </article>
   `).join("");
 
@@ -289,16 +293,32 @@ bagButton.addEventListener("click", () => {
   cartDialog.showModal();
 });
 
-menuButton.addEventListener("click", () => toggleMenu(mobileNav.hidden));
+function closeMobileMenu() {
+  toggleMenu(false);
+  menuButton.focus({ preventScroll: true });
+}
+
+menuButton.addEventListener("click", () => {
+  if (mobileNav.hidden) toggleMenu(true);
+  else closeMobileMenu();
+});
 mobileNav.addEventListener("click", (event) => {
-  if (event.target.closest("a")) toggleMenu(false);
+  if (event.target.closest("a")) closeMobileMenu();
 });
-mobileNav.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
-    toggleMenu(false);
-    menuButton.focus();
-  }
+menuButton.closest(".header").addEventListener("keydown", (event) => {
+  if (event.key !== "Escape" || mobileNav.hidden) return;
+  event.preventDefault();
+  closeMobileMenu();
 });
+
+const tickerToggle = document.querySelector(".ticker-toggle");
+const ticker = tickerToggle.closest(".ticker");
+tickerToggle.addEventListener("click", () => {
+  const paused = ticker.toggleAttribute("data-paused");
+  tickerToggle.setAttribute("aria-pressed", String(paused));
+  tickerToggle.querySelector("use").setAttribute("href", paused ? "#i-play" : "#i-pause");
+});
+ticker.setAttribute("data-ticker-ready", "");
 
 for (const dialog of [searchDialog, productDialog, cartDialog]) {
   dialog.addEventListener("click", (event) => {
@@ -361,24 +381,6 @@ renderProducts();
 syncCart();
 updateNavigation();
 window.addEventListener("hashchange", updateNavigation);
-
-const hero = document.querySelector(".hero");
-const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-let scrollFrame;
-
-function updateHeroMotion() {
-  scrollFrame = undefined;
-  const offset = reducedMotion.matches ? 0 : Math.min(window.scrollY * 0.075, 32);
-  hero.style.setProperty("--hero-shift", `${offset}px`);
-}
-
-window.addEventListener("scroll", () => {
-  if (!reducedMotion.matches && scrollFrame === undefined) {
-    scrollFrame = window.requestAnimationFrame(updateHeroMotion);
-  }
-}, { passive: true });
-reducedMotion.addEventListener("change", updateHeroMotion);
-updateHeroMotion();
 
 const fittingStage = document.querySelector("#fitting-stage");
 const fittingPhoto = document.querySelector("#fitting-photo");
