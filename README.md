@@ -1,20 +1,16 @@
-# Aula 03 — SEO Avançado
+# Atividade de SEO | Aula 03
 
-**Erik Emanuel Santos de Moura · 25/11/2026**
+Erik Emanuel Santos de Moura
 
-Escolhi a NOIR STREET, uma vitrine de streetwear feminino. O site tem uma página com a coleção, as formas de pagamento e o contato. [NOIR STREET no GitHub Pages](https://eriksmoura14-ai.github.io/streetwear/)
+Fiz a atividade usando a NOIR STREET, minha vitrine de streetwear feminino. [Link do site](https://eriksmoura14-ai.github.io/streetwear/)
 
-## Parte 1 — SEO on-page
+## Parte 1
 
-| O que analisei | Minha resposta |
-| --- | --- |
-| Palavra-chave principal | Streetwear feminino |
-| Palavras-chave secundárias | Blusas oversized femininas e calças cargo femininas |
-| Intenção de busca | Conhecer as peças, comparar preços e tamanhos e descobrir como fazer um pedido. |
-| Hierarquia | O H1 é **Streetwear feminino**. A coleção tem o H2 **The Street Edit**, e cada produto tem um H3 com seu nome. O conteúdo principal fica em `<main>` e cada cartão da coleção usa `<article>`. |
-| Links internos | **Explorar coleção streetwear** leva aos produtos. O texto de abertura também tem links para **peças da coleção** e **formas de pagamento**. |
+A palavra principal que escolhi foi **streetwear feminino**. As outras duas foram **blusas oversized femininas** e **calças cargo femininas**. Pensei em alguém que quer ver as roupas, saber o preço e escolher um tamanho antes de pedir.
 
-### Simulação do resultado no Google
+No site, **Streetwear feminino** é o H1. **The Street Edit** é o H2 da coleção, e os nomes das peças ficam em H3. A parte principal fica dentro de `main` e cada peça fica em um `article`.
+
+### Como pode aparecer no Google
 
 > **NOIR STREET | Streetwear feminino e coleção de moda urbana**  
 > https://eriksmoura14-ai.github.io/streetwear/  
@@ -22,42 +18,33 @@ Escolhi a NOIR STREET, uma vitrine de streetwear feminino. O site tem uma págin
 
 O título tem 58 caracteres e a descrição tem 158.
 
-### Perguntas de fixação
+### Respostas
 
-1. **Por que cada página deve ter título e descrição próprios?** Porque cada página tem um assunto. Um título e uma descrição específicos ajudam a pessoa a entender o que vai encontrar antes de abrir o link. Na minha vitrine, há uma única página.
-2. **Por que usar um H1 e respeitar a ordem dos títulos?** O H1 identifica o tema principal. O H2 separa as seções e o H3 indica os tópicos dentro de cada seção. Essa ordem também ajuda quem usa leitor de tela. O tamanho da letra pode ser ajustado no CSS.
-3. **Como substituir um link genérico?** No meu site, o link **Explorar coleção streetwear** indica que a pessoa vai para a seção de produtos. “Clique aqui” deixaria o destino em aberto.
-4. **Qual é a diferença entre editar e publicar?** Quando salvo no editor, a alteração fica na minha cópia local. Ela aparece para os visitantes depois que a versão com a mudança é publicada no GitHub Pages. O site público e o status em Actions mostram se a atualização entrou no ar.
+1. Cada página fala de uma coisa. Se o título e a descrição forem próprios, dá pra saber o que tem naquela página antes de abrir. A NOIR STREET tem uma página só.
+2. O H1 é o título principal. O H2 divide o conteúdo em seções e o H3 fica dentro dessas seções. Pra mudar o tamanho da letra, dá pra usar CSS.
+3. No lugar de “Clique aqui”, coloquei **Explorar coleção streetwear**. Assim já dá pra saber que o link leva pras peças.
+4. Quando eu salvo no editor, a mudança fica só na minha cópia. Ela aparece pra todo mundo quando a versão nova entra no GitHub Pages. Dá pra conferir o status em Actions e abrir o link do site.
 
-## Parte 2 — Imagens, links e SEO técnico
+## Parte 2
 
-As imagens dos cartões têm o nome da peça no atributo `alt` e carregam conforme a pessoa se aproxima da coleção. As fotos são externas, e o peso individual ficou sem verificação. No celular, o menu fica abaixo da marca e do carrinho, e a grade passa de quatro para duas colunas.
+As fotos dos produtos têm o nome da peça no `alt` e usam `loading="lazy"`. As fotos vêm de outros sites, então o peso de cada uma ficou sem verificação. No texto da abertura tem dois links, um pras peças e outro pras formas de pagamento. No celular, o menu fica embaixo da marca e a coleção aparece em duas colunas.
 
-O [robots.txt](https://eriksmoura14-ai.github.io/streetwear/robots.txt) e o [sitemap.xml](https://eriksmoura14-ai.github.io/streetwear/sitemap.xml) estão disponíveis no endereço publicado. O sitemap tem uma URL, porque coleção, pagamento e contato são seções da mesma página. Para o Google usar as regras de rastreamento, o `robots.txt` precisa estar na raiz do domínio que serve o site.
+A página está publicada com [robots.txt](https://eriksmoura14-ai.github.io/streetwear/robots.txt) e [sitemap.xml](https://eriksmoura14-ai.github.io/streetwear/sitemap.xml). No sitemap tem um endereço só, porque o menu leva pra partes da mesma página. O `robots.txt` está dentro da pasta do projeto. O Google lê as regras no arquivo da raiz do domínio.
 
-### Auditoria de referência
+### Auditoria
 
-Usei como referência o [portal Viva Sua Profissão sobre front-end](https://joaomarcelo-as.github.io/viva-sua-profissao/).
+Usei como referência o [Viva Sua Profissão sobre front-end](https://joaomarcelo-as.github.io/viva-sua-profissao/).
 
-| Critério | Resultado |
-| --- | --- |
-| Clareza | A profissão de desenvolvedor front-end aparece logo no título principal. |
-| Título e H1 | A página tem título próprio e H1 claro. Falta a descrição da página. |
-| Navegação | As sete âncoras levam a seções existentes. O botão de faixas salariais abriu o painel. |
-| Imagens e celular | As cinco imagens visíveis carregaram. A visualização no celular ficou sem avaliação. |
-| Arquivos técnicos | O endereço do `robots.txt` do projeto retornou 404. |
+- Dá pra entender de cara que o site fala da profissão de desenvolvedor front-end.
+- A aba tem título e a página tem H1. Faltou a descrição.
+- Os sete links internos levam pra seções da página. O botão de faixas salariais abriu normalmente.
+- As cinco imagens visíveis carregaram. A parte do celular ficou sem avaliação.
+- O endereço do `robots.txt` deu erro 404.
 
-### Perguntas de fixação
+### Respostas
 
-1. **Por que usar texto alternativo e nomes de arquivo descritivos?** O `alt` ajuda quem usa leitor de tela a entender o que a imagem mostra. Um nome como `calca-cargo-preta.webp` também ajuda a identificar o arquivo e dá contexto ao buscador.
-2. **O que é uma página órfã?** É uma página que ficou sem links internos apontando para ela. Os links do menu ou do texto ajudam tanto os visitantes quanto os buscadores a encontrá-la.
-3. **Para que servem o robots.txt e o sitemap.xml?** O `robots.txt` indica quais caminhos os rastreadores podem acessar. O `sitemap.xml` informa quais endereços fazem parte do site.
-4. **Por que a versão móvel importa para o Google?** O Google usa principalmente a versão móvel do conteúdo para indexar a página. Um layout responsivo também facilita a leitura e o uso do site no celular.
-5. **Qual foi a principal melhoria encontrada na auditoria?** O `robots.txt` do portal de referência retornou 404. Minha sugestão é disponibilizar o arquivo no endereço esperado e conferir se o link do sitemap funciona.
-
-### Referências
-
-- [Guia de SEO do Google](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)
-- [SEO para imagens](https://developers.google.com/search/docs/appearance/google-images?hl=pt-br)
-- [Indexação móvel](https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing)
-- [Especificação do robots.txt](https://developers.google.com/crawling/docs/robots-txt/robots-txt-spec)
+1. O `alt` explica a imagem pra quem usa leitor de tela. Um nome como `calca-cargo-preta.webp` também ajuda a entender o que tem na foto.
+2. Uma página órfã é uma página que ficou sem links apontando pra ela dentro do próprio site. Com um link no menu ou no texto, fica mais fácil pra pessoa e pro Google encontrarem a página.
+3. O `robots.txt` diz quais partes do site os robôs podem acessar. O `sitemap.xml` lista as páginas do site.
+4. O Google usa principalmente a versão de celular pra indexar o conteúdo. Um site que se adapta à tela também fica mais fácil de ler e navegar.
+5. O principal problema que vi foi o `robots.txt` dando 404. Eu colocaria o arquivo no endereço certo e conferiria se o sitemap abre.
