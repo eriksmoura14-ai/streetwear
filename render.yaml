@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: streetwaer
-    runtime: static
-    buildCommand: mkdir -p dist && cp index.html styles.css app.js fitting.js dist/ && cp -R assets dist/
-    staticPublishPath: ./dist
-    autoDeployTrigger: commit

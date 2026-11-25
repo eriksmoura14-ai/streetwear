@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://eriksmoura14-ai.github.io/streetwear/sitemap.xml

@@ -1,202 +1,1293 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#F8F5EF">
-  <meta name="description" content="Streetwaer. Streetwear feminino, caimento oversized e um provador virtual para montar seu look.">
-  <title>Streetwaer — Do asfalto pra rua</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="preload" href="assets/archivo-black-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="icon" href="data:,">
-  <script src="app.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NOIR STREET | Streetwear feminino e coleção de moda urbana</title>
+    <meta name="description" content="Explore o streetwear feminino da NOIR STREET: blusas oversized, calças cargo, bandanas e tênis. Veja os tamanhos disponíveis e monte seu pedido pelo WhatsApp.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        :root {
+            --preto: #090909;
+            --vinho: #751321;
+            --vermelho: #c3263b;
+            --branco: #f5f1ef;
+            --cinza: #aaa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--preto);
+            color: var(--branco);
+            font-family: "Outfit", sans-serif;
+        }
+
+        h1, h2, h3 {
+            font-family: Georgia, serif;
+            font-weight: normal;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button, select {
+            font-family: inherit;
+        }
+
+        /* CABEÇALHO */
+
+        header {
+            background: #090909;
+            padding: 22px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #292020;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: 3px;
+        }
+
+        .logo span {
+            color: var(--vermelho);
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            font-size: 14px;
+            transition: .3s;
+        }
+
+        nav a:hover {
+            color: var(--vermelho);
+        }
+
+        .cart-button {
+            border: 1px solid var(--vermelho);
+            padding: 10px 18px;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .icon {
+            width: 21px;
+            height: 21px;
+            display: inline-block;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+
+        .payment-icon {
+            width: 38px;
+            height: 38px;
+            color: #e35a69;
+            margin: 0 auto 8px;
+        }
+
+        /* INÍCIO */
+
+        .hero {
+            min-height: 620px;
+            padding: 90px 8%;
+            display: flex;
+            align-items: center;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #090909 5%,
+                    #090909dd 43%,
+                    #09090922 100%
+                ),
+                url("https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1600")
+                center 35%/cover;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .tag {
+            color: #e35a69;
+            letter-spacing: 4px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .hero h1 {
+            font-size: clamp(55px, 8vw, 95px);
+            line-height: .98;
+            margin: 25px 0;
+        }
+
+        .hero h1 span {
+            color: var(--vermelho);
+        }
+
+        .hero p {
+            color: #e1e1e1;
+            max-width: 420px;
+            line-height: 1.8;
+        }
+
+        main p a {
+            text-decoration: underline;
+            text-underline-offset: .2em;
+        }
+
+        section[id] {
+            scroll-margin-top: 100px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+            background: var(--vermelho);
+            padding: 15px 30px;
+            color: white;
+            font-weight: 700;
+            transition: .3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--vinho);
+            transform: translateY(-3px);
+        }
+
+        /* PRODUTOS */
+
+        .products {
+            padding: 90px 7%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-size: 48px;
+            margin: 12px 0;
+        }
+
+        .section-title p {
+            color: var(--cinza);
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .filters button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 10px 22px;
+            cursor: pointer;
+        }
+
+        .filters button.active,
+        .filters button:hover {
+            background: var(--vinho);
+            border-color: var(--vinho);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .product {
+            background: #141414;
+            overflow: hidden;
+            transition: .3s;
+        }
+
+        .product:hover {
+            transform: translateY(-7px);
+        }
+
+        .product img {
+            width: 100%;
+            height: 310px;
+            object-fit: cover;
+            display: block;
+            transition: .4s;
+        }
+
+        .product:hover img {
+            transform: scale(1.04);
+        }
+
+        .product-info {
+            padding: 18px;
+        }
+
+        .category {
+            color: #d34a5d;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .product h3 {
+            font-family: "Outfit", sans-serif;
+            font-size: 18px;
+            margin: 9px 0;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .product select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 12px;
+            background: #242020;
+            border: 1px solid #555;
+            color: white;
+        }
+
+        .add {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            background: transparent;
+            border: 1px solid var(--vermelho);
+            color: white;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .add:hover {
+            background: var(--vermelho);
+        }
+
+        /* BANNER */
+
+        .banner {
+            min-height: 360px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 65px 8%;
+
+            background:
+                linear-gradient(#751321bb, #090909bb),
+                url("https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=1400")
+                center/cover;
+        }
+
+        .banner h2 {
+            font-size: clamp(35px, 6vw, 55px);
+            margin: 15px 0;
+        }
+
+        .banner p {
+            color: #eee;
+        }
+
+        /* PAGAMENTO */
+
+        .payment {
+            padding: 75px 7%;
+            text-align: center;
+        }
+
+        .payment h2 {
+            font-size: 40px;
+            margin-bottom: 35px;
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .payment-card {
+            background: #151515;
+            padding: 30px;
+            border-bottom: 3px solid var(--vinho);
+        }
+
+        .payment-card strong {
+            display: block;
+            font-size: 19px;
+            margin: 12px 0;
+        }
+
+        .payment-card p {
+            color: var(--cinza);
+            font-size: 14px;
+        }
+
+        /* CONTATO */
+
+        .contact {
+            padding: 75px 7%;
+            text-align: center;
+            background: #110b0d;
+        }
+
+        .contact h2 {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .contact p {
+            color: #ccc;
+            line-height: 2;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .contact-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--vinho);
+            padding: 13px 25px;
+            transition: .3s;
+        }
+
+        .contact-links a:hover {
+            background: var(--vermelho);
+        }
+
+        /* RODAPÉ */
+
+        footer {
+            background: #050505;
+            text-align: center;
+            padding: 30px;
+            color: #888;
+            font-size: 13px;
+        }
+
+        /* CARRINHO */
+
+        .cart-panel {
+            position: fixed;
+            right: -420px;
+            top: 0;
+            width: min(390px, 100%);
+            height: 100vh;
+            background: #171313;
+            z-index: 30;
+            padding: 25px;
+            transition: .3s;
+            overflow-y: auto;
+        }
+
+        .cart-panel.open {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .close {
+            background: none;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .close .icon {
+            width: 25px;
+            height: 25px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #444;
+            gap: 10px;
+        }
+
+        .cart-item small {
+            display: block;
+            color: #ccc;
+            margin-top: 5px;
+        }
+
+        .remove {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            color: #e45b68;
+            border: none;
+            cursor: pointer;
+        }
+
+        .remove .icon {
+            width: 17px;
+            height: 17px;
+        }
+
+        .total {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 25px 0;
+        }
+
+        .checkout {
+            width: 100%;
+            background: #168a50;
+            padding: 15px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: #0009;
+            z-index: 20;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        /* RESPONSIVIDADE */
+
+        @media(max-width: 950px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 600px) {
+
+            header {
+                padding: 12px 5%;
+                flex-wrap: wrap;
+                gap: 8px 12px;
+            }
+
+            nav {
+                order: 1;
+                flex: 0 0 100%;
+                flex-wrap: wrap;
+                gap: 4px 15px;
+            }
+
+            nav a {
+                padding: 6px 0;
+            }
+
+            section[id] {
+                scroll-margin-top: 125px;
+            }
+
+            .hero {
+                min-height: 530px;
+                padding: 60px 7%;
+                background-position: 60% center;
+            }
+
+            .hero h1 {
+                font-size: clamp(31px, 10vw, 58px);
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .product img {
+                height: 190px;
+            }
+
+            .product-info {
+                padding: 12px;
+            }
+
+            .product h3 {
+                font-size: 15px;
+            }
+
+            .payment-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title h2 {
+                font-size: 38px;
+            }
+
+        }
+
+    </style>
+
 </head>
+
 <body>
-  <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></symbol>
-    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l1 13H4L5 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></symbol>
-    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
-    <symbol id="i-diagonal" viewBox="0 0 24 24"><path d="M6 18 18 6M7 6h11v11"/></symbol>
-    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
-    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M9 6v12m6-12v12"/></symbol>
-    <symbol id="i-play" viewBox="0 0 24 24"><path d="m9 5 11 7-11 7V5Z"/></symbol>
-    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
-    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
-    <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M4 11a8 8 0 1 1 2 6m-2-1v-5h5"/></symbol>
-    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
-  </svg>
 
-  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
-  <header class="header" id="topo">
-    <div class="container header-inner">
-      <a class="brand" href="#topo" aria-label="Streetwaer, início">Streetwaer</a>
-      <nav class="main-nav" aria-label="Principal">
-        <a href="#colecao">Coleção</a>
-        <a href="#sobre">Sobre</a>
-        <a href="#provador">Provador</a>
-      </nav>
-      <div class="header-actions">
-        <button class="icon-button" type="button" data-open-search aria-label="Buscar"><svg aria-hidden="true"><use href="#i-search"/></svg></button>
-        <button class="icon-button bag-button" type="button" data-open-cart aria-label="Sacola, 0 itens"><svg aria-hidden="true"><use href="#i-bag"/></svg><span id="bag-count" aria-hidden="true">0</span></button>
-        <button class="icon-button mobile-menu" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
-      </div>
-    </div>
-    <nav id="mobile-nav" class="mobile-nav container" aria-label="Principal no celular" hidden>
-      <a href="#colecao">Coleção</a>
-      <a href="#sobre">Sobre</a>
-      <a href="#provador">Provador</a>
-    </nav>
-  </header>
+    <!-- CABEÇALHO -->
 
-  <main id="conteudo">
-    <section class="hero" aria-labelledby="hero-title">
-      <picture class="hero-image">
-        <source media="(max-width: 720px)" srcset="assets/asfalto-mobile.webp" width="610" height="616">
-        <img src="assets/asfalto.webp" alt="Modelo com moletom vinho e calça cargo preta em um estacionamento de concreto" width="1600" height="616" fetchpriority="high">
-      </picture>
-      <div class="container hero-inner">
-        <div class="hero-copy">
-          <p class="hero-eyebrow">DROP 01 / ASFALTO</p>
-          <h1 id="hero-title"><span>DO ASFALTO</span> <span>PRA RUA</span></h1>
-          <a class="hero-cta" href="#colecao">Explorar coleção</a>
+    <header>
+
+        <a href="#inicio" class="logo" aria-label="NOIR STREET, início">NOIR<span>.</span></a>
+
+        <nav aria-label="Menu principal">
+            <a href="#inicio">Início</a>
+            <a href="#produtos">Produtos</a>
+            <a href="#pagamento">Pagamento</a>
+            <a href="#contato">Contato</a>
+        </nav>
+
+        <button class="cart-button" onclick="toggleCart()">
+
+            <svg class="icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round"
+            aria-hidden="true">
+
+                <circle cx="9" cy="21" r="1"/>
+                <circle cx="20" cy="21" r="1"/>
+                <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>
+
+            </svg>
+
+            Carrinho (<span id="count">0</span>)
+
+        </button>
+
+    </header>
+
+    <main>
+    <!-- HERO -->
+
+    <section class="hero" id="inicio">
+
+        <div class="hero-content">
+
+            <span class="tag">WOMEN'S STREETWEAR • 2026</span>
+
+            <h1>Streetwear <span>feminino.</span></h1>
+
+            <p>
+                Moda urbana feminina para quem não tem medo de expressar
+                sua personalidade. Explore as <a href="#produtos">peças da coleção</a>
+                ou consulte as <a href="#pagamento">formas de pagamento</a>.
+            </p>
+
+            <a href="#produtos" class="btn">
+
+                EXPLORAR COLEÇÃO STREETWEAR
+
+                <svg class="icon" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+
+                    <path d="M7 17 17 7M7 7h10v10"/>
+
+                </svg>
+
+            </a>
+
         </div>
-      </div>
+
     </section>
 
-    <div class="ticker">
-      <p class="sr-only">Asfalto / Drop 01 / Streetwaer</p>
-      <p class="ticker-static" aria-hidden="true">Asfalto / Drop 01 / Streetwaer</p>
-      <div class="ticker-viewport" id="ticker-motion" aria-hidden="true">
-        <div class="ticker-track">
-          <div class="ticker-group">
-            <span>Asfalto</span><span>/</span><span>Drop 01</span><span>/</span><span>Streetwaer</span><span>/</span>
-            <span>Asfalto</span><span>/</span><span>Drop 01</span><span>/</span><span>Streetwaer</span><span>/</span>
-          </div>
-          <div class="ticker-group">
-            <span>Asfalto</span><span>/</span><span>Drop 01</span><span>/</span><span>Streetwaer</span><span>/</span>
-            <span>Asfalto</span><span>/</span><span>Drop 01</span><span>/</span><span>Streetwaer</span><span>/</span>
-          </div>
-        </div>
-      </div>
-      <button class="ticker-toggle" type="button" aria-label="Pausar faixa da campanha" aria-controls="ticker-motion" aria-pressed="false">
-        <svg aria-hidden="true"><use href="#i-pause"/></svg>
-      </button>
-    </div>
+    <!-- PRODUTOS -->
 
-    <section class="collection container" id="colecao" aria-labelledby="collection-title" tabindex="-1">
-      <div class="collection-heading">
-        <h2 id="collection-title">Peças do drop</h2>
-        <div class="filters" role="group" aria-label="Filtrar coleção">
-          <button class="filter" type="button" aria-pressed="true" data-filter="todos">Todos</button>
-          <button class="filter" type="button" aria-pressed="false" data-filter="moletons">Moletons</button>
-          <button class="filter" type="button" aria-pressed="false" data-filter="camisetas">Camisetas</button>
-          <button class="filter" type="button" aria-pressed="false" data-filter="calcas">Calças</button>
+    <section class="products" id="produtos">
+
+        <div class="section-title">
+
+            <span class="tag">NOIR STREET COLLECTION</span>
+
+            <h2>THE STREET EDIT</h2>
+
+            <p>Peças urbanas. Personalidade sem limites.</p>
+
         </div>
-      </div>
-      <div class="product-grid" id="product-grid"></div>
-      <p class="sr-only" id="filter-status" role="status"></p>
-      <noscript>Ative o JavaScript para explorar a coleção e usar a sacola.</noscript>
+
+        <div class="filters">
+
+            <button class="active" onclick="filterProducts('todos', this)">
+                Todos
+            </button>
+
+            <button onclick="filterProducts('blusa', this)">
+                Blusas
+            </button>
+
+            <button onclick="filterProducts('calca', this)">
+                Calças
+            </button>
+
+            <button onclick="filterProducts('bandana', this)">
+                Bandanas
+            </button>
+
+            <button onclick="filterProducts('tenis', this)">
+                Tênis
+            </button>
+
+        </div>
+
+        <div class="product-grid" id="productGrid"></div>
+
     </section>
 
-    <section class="about" id="sobre" aria-labelledby="about-title">
-      <div class="container about-inner">
-        <figure class="about-photo">
-          <img src="assets/asfalto-detalhe.webp" alt="Detalhe da estampa clara, da costura e do bolso canguru do moletom vinho" width="416" height="268" loading="lazy" decoding="async">
-        </figure>
-        <div class="about-copy">
-          <h2 id="about-title">Sobre a Streetwaer</h2>
-          <p>A Streetwaer é uma loja independente de streetwear feminino. Nosso primeiro drop reúne camisetas oversized, moletons pesados e calças baggy para montar o look do seu jeito.</p>
-          <a class="about-link" href="#colecao">Ver coleção <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    <!-- BANNER -->
+
+    <section class="banner">
+
+        <div>
+
+            <span class="tag">NO RULES. JUST STYLE.</span>
+
+            <h2>NOT MADE TO FIT IN.</h2>
+
+            <p>Seu estilo não precisa de aprovação.</p>
+
         </div>
-      </div>
+
     </section>
 
-    <section class="fitting" id="provador" aria-labelledby="fitting-title">
-      <div class="container fitting-inner">
-        <div class="fitting-header">
-          <p class="eyebrow"><span></span> MONTE SEU LOOK</p>
-          <h2 id="fitting-title" tabindex="-1">PROVE O <em>LOOK.</em></h2>
-          <p>Vista as peças na personagem 3D e gire para ver o look de todos os ângulos.</p>
-        </div>
-        <div class="fitting-layout">
-          <div class="fitting-view">
-            <div class="fitting-modes" role="group" aria-label="Visualização do look">
-              <button type="button" data-fitting-mode="photo" aria-pressed="false" aria-controls="fitting-photo">Foto da modelo</button>
-              <button type="button" data-fitting-mode="3d" aria-pressed="true" aria-controls="fitting-stage">Girar em 3D</button>
+    <!-- PAGAMENTOS -->
+
+    <section class="payment" id="pagamento">
+
+        <span class="tag">COMPRA SEGURA</span>
+
+        <h2>FORMAS DE PAGAMENTO</h2>
+
+        <div class="payment-grid">
+
+            <div class="payment-card">
+
+                <svg class="payment-icon" viewBox="0 0 40 40"
+                fill="none" stroke="currentColor" stroke-width="2.4"
+                stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+
+                    <path d="M12 8 20 16 28 8M12 32l8-8 8 8M8 12l8 8-8 8M32 12l-8 8 8 8"/>
+
+                </svg>
+
+                <strong>PIX</strong>
+
+                <p>Pagamento rápido e prático.</p>
+
             </div>
-            <figure class="fitting-photo" id="fitting-photo" hidden>
-              <img id="fitting-look-image" src="assets/look-camiseta-baggy.webp" alt="Modelo vestindo Camiseta Asfalto e Baggy Subsolo" width="675" height="900" loading="lazy">
-            </figure>
-            <div class="fitting-stage" id="fitting-stage" aria-busy="true">
-              <div class="fitting-canvas" id="fitting-canvas"></div>
-              <p class="fitting-state" id="fitting-state" role="status">Carregando personagem…</p>
-              <div class="rotation-controls" role="group" aria-label="Girar personagem">
-                <button type="button" class="icon-button rotate-left" data-rotate="-1" aria-label="Girar à esquerda" disabled><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
-                <button type="button" class="icon-button" data-reset-view aria-label="Voltar à vista inicial" disabled><svg aria-hidden="true"><use href="#i-rotate"/></svg></button>
-                <button type="button" class="icon-button" data-rotate="1" aria-label="Girar à direita" disabled><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
-              </div>
-              <p class="stage-hint">ARRASTE PARA GIRAR</p>
-              <div class="fitting-views" role="group" aria-label="Enquadramento da personagem">
-                <button class="fitting-zoom" type="button" data-fitting-face aria-pressed="false" disabled>VER ROSTO</button>
-                <button class="fitting-zoom" type="button" data-fitting-zoom aria-pressed="false" disabled>VER DE PERTO</button>
-              </div>
+
+            <div class="payment-card">
+
+                <svg class="payment-icon" viewBox="0 0 40 40"
+                fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+
+                    <rect x="4" y="8" width="32" height="24" rx="3"/>
+                    <path d="M4 15h32M9 25h8"/>
+
+                </svg>
+
+                <strong>Cartão de crédito</strong>
+
+                <p>Consulte as condições de parcelamento.</p>
+
             </div>
-          </div>
-          <div class="fitting-wardrobe">
-            <h3>Escolha as peças</h3>
-            <p>Combine uma peça de cima com a Baggy Subsolo. Clique novamente para remover uma peça.</p>
-            <div id="fitting-outfits"></div>
-            <details class="fitting-reference">
-              <summary>Comparar com a foto do catálogo</summary>
-              <figure>
-                <img id="fitting-reference-image" src="assets/camiseta.webp" alt="Camiseta Asfalto vestida na modelo" width="800" height="1000" loading="lazy">
-                <figcaption id="fitting-reference-caption">Camiseta Asfalto</figcaption>
-              </figure>
-            </details>
-            <p class="sr-only" id="fitting-selection" role="status"></p>
-          </div>
+
+            <div class="payment-card">
+
+                <svg class="payment-icon" viewBox="0 0 40 40"
+                fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+
+                    <rect x="4" y="8" width="32" height="24" rx="3"/>
+                    <path d="M4 15h32M10 25h7M27 24l3 3 5-6"/>
+
+                </svg>
+
+                <strong>Cartão de débito</strong>
+
+                <p>Pagamento por cartão de débito.</p>
+
+            </div>
+
         </div>
-      </div>
+
     </section>
 
-  </main>
+    <!-- CONTATO -->
 
-  <footer class="footer">
-    <div class="container footer-inner">
-      <div>
-        <a class="brand" href="#topo" aria-label="Streetwaer, voltar ao início">Streetwaer</a>
-        <p>Moda urbana independente · MEI</p>
-      </div>
-      <nav class="footer-nav" aria-label="Rodapé">
-        <a href="#colecao">Coleção</a>
-        <a href="#sobre">Sobre</a>
-        <a href="#provador">Provador</a>
-      </nav>
-    </div>
-  </footer>
+    <section class="contact" id="contato">
 
-  <dialog class="dialog search-dialog" id="search-dialog" aria-labelledby="search-title">
-    <div class="dialog-head">
-      <h2 id="search-title">Buscar</h2>
-      <button class="icon-button" type="button" data-close aria-label="Fechar busca"><svg><use href="#i-close"/></svg></button>
-    </div>
-    <label class="sr-only" for="search-input">Nome ou tipo de peça</label>
-    <input id="search-input" type="search" placeholder="Busque por camiseta, moletom, cargo…" autocomplete="off">
-    <div id="search-results" class="search-results" aria-live="polite"></div>
-  </dialog>
+        <span class="tag">FALE CONOSCO</span>
 
-  <dialog class="dialog product-dialog" id="product-dialog" aria-labelledby="product-title">
-    <button class="icon-button product-close" type="button" data-close aria-label="Fechar detalhes"><svg><use href="#i-close"/></svg></button>
-    <div id="product-detail"></div>
-  </dialog>
+        <h2>LET'S TALK.</h2>
 
-  <dialog class="dialog cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
-    <div class="dialog-head">
-      <h2 id="cart-title">Sua sacola</h2>
-      <button class="icon-button" type="button" data-close aria-label="Fechar sacola"><svg><use href="#i-close"/></svg></button>
-    </div>
-    <div id="cart-content"></div>
-  </dialog>
-  <div class="toast" id="toast" role="status"></div>
+        <p>
+            Ficou com alguma dúvida sobre nossos produtos?<br>
+            Entre em contato com nossa equipe.
+        </p>
+
+        <div class="contact-links">
+
+            <!-- WHATSAPP CORRIGIDO -->
+
+            <a href="https://wa.me/5534999789011"
+            target="_blank" rel="noopener noreferrer">
+
+                <svg class="icon" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+
+                    <path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.6A8.5 8.5 0 1 1 20.5 11.5Z"/>
+                    <path d="M8.5 8.5c.5 2.8 2.2 4.5 5 5l1.2-1.2 2 1c-.2 1.3-1.2 2-2.5 2-3.8-.5-6.5-3.2-7-7 .1-1.3.8-2.3 2-2.5l1 2-1.7.7Z"/>
+
+                </svg>
+
+                WHATSAPP
+
+            </a>
+
+            <a href="https://instagram.com/"
+            target="_blank" rel="noopener noreferrer">
+
+                <svg class="icon" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+
+                    <rect x="3" y="3" width="18" height="18" rx="5"/>
+                    <circle cx="12" cy="12" r="4"/>
+                    <path d="M17.5 6.5h.01"/>
+
+                </svg>
+
+                INSTAGRAM
+
+            </a>
+
+            <a href="mailto:contato@noirstreet.com">
+
+                <svg class="icon" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+
+                    <rect x="3" y="5" width="18" height="14" rx="2"/>
+                    <path d="m4 7 8 6 8-6"/>
+
+                </svg>
+
+                E-MAIL
+
+            </a>
+
+        </div>
+
+    </section>
+
+    </main>
+
+    <!-- RODAPÉ -->
+
+    <footer>
+
+        <p><strong>NOIR STREET</strong></p>
+
+        <p>© 2026 NOIR STREET — TODOS OS DIREITOS RESERVADOS.</p>
+
+        <p>WOMEN'S STREETWEAR • URBAN CULTURE</p>
+
+    </footer>
+
+    <!-- CARRINHO -->
+
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <aside class="cart-panel" id="cart">
+
+        <div class="cart-header">
+
+            <h2>Meu carrinho</h2>
+
+            <button class="close" onclick="toggleCart()" aria-label="Fechar carrinho">
+
+                <svg class="icon" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" aria-hidden="true">
+
+                    <path d="m18 6-12 12M6 6l12 12"/>
+
+                </svg>
+
+            </button>
+
+        </div>
+
+        <div id="cartItems"></div>
+
+        <div class="total">
+
+            Total: R$ <span id="total">0,00</span>
+
+        </div>
+
+        <button class="checkout" onclick="checkout()">
+
+            FINALIZAR PELO WHATSAPP
+
+        </button>
+
+    </aside>
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        /* PRODUTOS */
+
+        const products = [
+
+            {
+                id: 1,
+                name: "Oversized Red",
+                category: "blusa",
+                price: 129.90,
+                image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=700"
+            },
+
+            {
+                id: 2,
+                name: "Black Baby Tee",
+                category: "blusa",
+                price: 89.90,
+                image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=700"
+            },
+
+            {
+                id: 3,
+                name: "Urban Hoodie",
+                category: "blusa",
+                price: 189.90,
+                image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=700"
+            },
+
+            {
+                id: 4,
+                name: "Cargo Street",
+                category: "calca",
+                price: 179.90,
+
+                /* IMAGEM DA CALÇA CORRIGIDA */
+
+                image: "https://img-edg.joomcdn.net/22d961a098152b0d931214a2ec9dfede329459a8_original.jpeg"
+            },
+
+            {
+                id: 5,
+                name: "Wide Leg Black",
+                category: "calca",
+                price: 159.90,
+                image: "https://fulmo-img-server.com/streety/04947fff15394fb284757d7dce0dff1c.jpg"
+            },
+
+            {
+                id: 6,
+                name: "Bandana Red",
+                category: "bandana",
+                price: 39.90,
+                image: "https://images.unsplash.com/photo-1521369909029-2afed882baee?w=700"
+            },
+
+            {
+                id: 7,
+                name: "Bandana Dark",
+                category: "bandana",
+                price: 39.90,
+                image: "https://images.unsplash.com/photo-1584030373081-f37b7bb4fa8e?w=700"
+            },
+
+            {
+                id: 8,
+                name: "Red Street Sneakers",
+                category: "tenis",
+                price: 299.90,
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700"
+            },
+
+            {
+                id: 9,
+                name: "Urban Classic",
+                category: "tenis",
+                price: 279.90,
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700"
+            },
+
+            {
+                id: 10,
+                name: "Black Sneakers",
+                category: "tenis",
+                price: 319.90,
+                image: "https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?w=700"
+            }
+
+        ];
+
+        let cart = [];
+
+        /* FORMATAÇÃO DO DINHEIRO */
+
+        function money(value) {
+
+            return value.toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+        }
+
+        /* MOSTRAR PRODUTOS */
+
+        function renderProducts(list = products) {
+
+            document.getElementById("productGrid").innerHTML =
+
+                list.map(p => `
+
+                    <article class="product">
+
+                        <img
+                            src="${p.image}"
+                            alt="${p.name}"
+                            loading="lazy"
+                            decoding="async"
+                            onerror="this.onerror=null;this.src='https://placehold.co/600x600/171313/ffffff?text=NOIR+STREET'"
+                        >
+
+                        <div class="product-info">
+
+                            <span class="category">${p.category}</span>
+
+                            <h3>${p.name}</h3>
+
+                            <div class="price">
+                                R$ ${money(p.price)}
+                            </div>
+
+                            <select id="size-${p.id}" aria-label="Tamanho de ${p.name}">
+
+                                <option value="">
+                                    Escolha o tamanho
+                                </option>
+
+                                ${
+                                    p.category === "tenis"
+
+                                    ? [36,37,38,39,40,41,42].map(n =>
+                                        `<option value="${n}">${n}</option>`
+                                      ).join("")
+
+                                    : p.category === "bandana"
+
+                                    ? '<option value="Único">Único</option>'
+
+                                    : ["PP","P","M","G","GG"].map(n =>
+                                        `<option value="${n}">${n}</option>`
+                                      ).join("")
+                                }
+
+                            </select>
+
+                            <button class="add" onclick="addToCart(${p.id})">
+
+                                <svg class="icon" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.8"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                aria-hidden="true">
+
+                                    <circle cx="9" cy="21" r="1"/>
+                                    <circle cx="20" cy="21" r="1"/>
+                                    <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>
+
+                                </svg>
+
+                                ADICIONAR AO CARRINHO
+
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                `).join("");
+
+        }
+
+        /* FILTROS */
+
+        function filterProducts(category, button) {
+
+            document.querySelectorAll(".filters button").forEach(b => {
+                b.classList.remove("active");
+            });
+
+            button.classList.add("active");
+
+            renderProducts(
+                category === "todos"
+                ? products
+                : products.filter(p => p.category === category)
+            );
+
+        }
+
+        /* ADICIONAR AO CARRINHO */
+
+        function addToCart(id) {
+
+            const product = products.find(p => p.id === id);
+
+            const size = document.getElementById(`size-${id}`).value;
+
+            if (!size) {
+
+                alert("Escolha um tamanho antes de adicionar!");
+
+                return;
+
+            }
+
+            const existing = cart.find(p =>
+                p.id === id && p.size === size
+            );
+
+            if (existing) {
+
+                existing.quantity++;
+
+            } else {
+
+                cart.push({
+                    ...product,
+                    size,
+                    quantity: 1
+                });
+
+            }
+
+            updateCart();
+
+        }
+
+        /* REMOVER PRODUTO */
+
+        function removeFromCart(id, size) {
+
+            cart = cart.filter(p =>
+                !(p.id === id && p.size === size)
+            );
+
+            updateCart();
+
+        }
+
+        /* ATUALIZAR CARRINHO */
+
+        function updateCart() {
+
+            const items = document.getElementById("cartItems");
+
+            items.innerHTML = cart.length
+
+                ? cart.map(p => `
+
+                    <div class="cart-item">
+
+                        <div>
+
+                            <strong>${p.name}</strong>
+
+                            <small>Tamanho: ${p.size}</small>
+
+                            <small>Quantidade: ${p.quantity}</small>
+
+                            <small>
+                                R$ ${money(p.price * p.quantity)}
+                            </small>
+
+                        </div>
+
+                        <button
+                            class="remove"
+                            onclick="removeFromCart(${p.id}, '${p.size}')"
+                            aria-label="Remover ${p.name} do carrinho"
+                        >
+
+                            <svg class="icon" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
+
+                                <path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v6m6-6v6"/>
+
+                            </svg>
+
+                            <span>Remover</span>
+
+                        </button>
+
+                    </div>
+
+                `).join("")
+
+                : "<p>Seu carrinho está vazio.</p>";
+
+            document.getElementById("count").textContent =
+
+                cart.reduce((s, p) => s + p.quantity, 0);
+
+            document.getElementById("total").textContent =
+
+                money(
+                    cart.reduce((s, p) =>
+                        s + p.price * p.quantity, 0
+                    )
+                );
+
+        }
+
+        /* ABRIR E FECHAR CARRINHO */
+
+        function toggleCart() {
+
+            document.getElementById("cart").classList.toggle("open");
+
+            document.getElementById("overlay").classList.toggle("show");
+
+        }
+
+        /* FINALIZAR PEDIDO */
+
+        function checkout() {
+
+            if (!cart.length) {
+
+                alert("Adicione algum produto ao carrinho!");
+
+                return;
+
+            }
+
+            /* NÚMERO CORRIGIDO */
+
+            const phone = "5534999789011";
+
+            let message =
+                "Olá! Gostaria de fazer um pedido na NOIR STREET:\n\n";
+
+            cart.forEach(p => {
+
+                message += `${p.quantity}x ${p.name}\n`;
+
+                message += `Tamanho: ${p.size}\n`;
+
+                message += `Subtotal: R$ ${money(p.price * p.quantity)}\n\n`;
+
+            });
+
+            const total = cart.reduce(
+                (s, p) => s + p.price * p.quantity, 0
+            );
+
+            message += `TOTAL: R$ ${money(total)}\n`;
+
+            message +=
+                "Gostaria de combinar o pagamento e a entrega.";
+
+            window.open(
+                `https://wa.me/${phone}?text=${encodeURIComponent(message)}`,
+                "_blank",
+                "noopener,noreferrer"
+            );
+
+        }
+
+        /* INICIAR */
+
+        renderProducts();
+
+        updateCart();
+
+    </script>
+
 </body>
+
 </html>
