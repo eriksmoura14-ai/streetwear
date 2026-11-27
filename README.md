@@ -8,7 +8,7 @@ Fiz a atividade usando a NOIR STREET, minha vitrine de streetwear feminino. [Lin
 
 A palavra principal que escolhi foi **streetwear feminino**. As outras duas foram **blusas oversized femininas** e **calças cargo femininas**. Pensei em alguém que quer ver as roupas, saber o preço e escolher um tamanho antes de pedir.
 
-No site, **Streetwear feminino** é o H1. **The Street Edit** é o H2 da coleção, e os nomes das peças ficam em H3. A parte principal fica dentro de `main` e cada peça fica em um `article`.
+No site, **Streetwear feminino** é o H1. **The Street Edit** é o H2 da coleção, e os nomes das peças ficam em H3. A parte principal fica dentro de `main` e cada peça fica em `article`.
 
 ### Como pode aparecer no Google
 
@@ -71,3 +71,137 @@ Usei como referência o [Viva Sua Profissão sobre front-end](https://joaomarcel
 5. No portal de referência, o principal problema foi o `robots.txt` dar 404. Eu colocaria o arquivo no endereço esperado e conferiria se o link pro sitemap abre.
 
 Fontes: [SEO de imagens](https://developers.google.com/search/docs/appearance/google-images?hl=pt-br), [indexação móvel](https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing), [robots.txt](https://developers.google.com/crawling/docs/robots-txt/robots-txt-spec) e [sitemaps](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap).
+
+---
+
+# Atividade Prática — Aula 4 (Parte 1): Análise de Requisitos
+
+Projeto Viva Sua Profissão • Personas, Requisitos (RF, RNF e RN) e Implementação no GitHub
+
+## Etapa 1 — Levantamento de Personas
+
+### Persona 1 — Estudante do Ensino Médio (16 anos)
+- **Perfil:** Estudante que está decidindo qual curso técnico fazer.
+- **Principal dúvida/necessidade:** Saber o que faz um técnico em Desenvolvimento de Sistemas no dia a dia e quais habilidades precisa aprender.
+- **Página do portal que resolve:** `index.html` e `pages/habilidades.html`.
+
+### Persona 2 — Jovem em busca do primeiro emprego (19 anos)
+- **Perfil:** Jovem que deseja ingressar no mercado de tecnologia.
+- **Principal dúvida/necessidade:** Conhecer as áreas de atuação e saber como se preparar para conseguir o primeiro emprego.
+- **Página do portal que resolve:** `pages/profissoes.html` e `pages/habilidades.html`.
+
+## Etapa 2 — Especificação Técnica: RF, RNF e RN
+
+### Requisitos Funcionais (RF)
+
+| Código | Tipo | Descrição Clara do Requisito | Status |
+|---|---|---|---|
+| RF01 | Funcional | O usuário deve navegar entre todas as páginas pelo menu sem links quebrados. | Implementado |
+| RF02 | Funcional | O portal deve apresentar uma seção de perguntas frequentes (FAQ) sobre Desenvolvimento de Sistemas. | Planejado |
+| RF03 | Funcional | O portal deve disponibilizar um passo a passo de estudos com habilidades e tecnologias recomendadas para iniciantes. | Planejado |
+
+### Requisitos Não Funcionais (RNF)
+
+| Código | Tipo | Descrição Clara do Requisito | Status |
+|---|---|---|---|
+| RNF01 | Não Funcional | O layout deve ser responsivo em telas de celular sem barra de rolagem horizontal. | Implementado |
+| RNF02 | Não Funcional | O site deve apresentar textos legíveis, contraste adequado e navegação simples para facilitar o acesso às informações. | Planejado |
+
+### Regra de Negócio (RN)
+
+| Código | Tipo | Descrição Clara do Requisito | Status |
+|---|---|---|---|
+| RN01 | Regra de Negócio | As informações sobre profissões e tecnologias devem ser organizadas de forma clara e utilizar fontes confiáveis. | Planejado |
+
+## Etapa 3 — De Requisito para Código no GitHub
+
+**Requisito escolhido: RF02 — Seção de Perguntas Frequentes**
+
+Abaixo, uma implementação em HTML para adicionar ao portal:
+
+```html
+<section id="faq">
+    <h2>Perguntas Frequentes</h2>
+
+    <article>
+        <h3>O que faz um desenvolvedor de sistemas?</h3>
+        <p>
+            Desenvolve, testa e mantém sistemas, sites e aplicações
+            utilizados para solucionar problemas.
+        </p>
+    </article>
+
+    <article>
+        <h3>Preciso saber matemática para programar?</h3>
+        <p>
+            Conhecimentos de lógica e matemática ajudam,
+            mas é possível aprender programação começando do básico.
+        </p>
+    </article>
+
+    <article>
+        <h3>Quais linguagens devo aprender?</h3>
+        <p>
+            HTML, CSS e JavaScript são boas opções para começar
+            no desenvolvimento web.
+        </p>
+    </article>
+</section>
+```
+
+### CSS da seção
+
+```css
+#faq {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+#faq h2 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+#faq article {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background-color: #f2f2f2;
+}
+
+#faq article h3 {
+    margin-bottom: 10px;
+    color: #202938;
+}
+
+#faq article p {
+    line-height: 1.6;
+}
+```
+
+### Commit sugerido
+
+```bash
+git add .
+git commit -m "feat: implementa RF02 - seção de perguntas frequentes"
+git push
+```
+
+## Etapa 4 — Perguntas de Fixação
+
+### 1. Qual é a diferença entre um Requisito Funcional (RF) e um Requisito Não Funcional (RNF)? Dê um exemplo de cada usando o projeto Viva Sua Profissão.
+
+O Requisito Funcional descreve uma função que o site deve realizar, como apresentar perguntas frequentes sobre a profissão de Desenvolvimento de Sistemas. O Requisito Não Funcional descreve a qualidade ou como o site deve funcionar, como ser responsivo e funcionar corretamente em celulares.
+
+### 2. Por que definir personas antes de sair escrevendo código evita retrabalho no desenvolvimento de um site?
+
+Porque as personas ajudam a entender quem vai utilizar o site e quais são suas necessidades. Dessa forma, é possível desenvolver funcionalidades que realmente ajudam os usuários, evitando criar páginas e recursos desnecessários e precisar modificá-los depois.
+
+### 3. O que pode acontecer com um projeto web quando os requisitos ficam vagos (ex.: "fazer um site bonito e rápido") em vez de objetivos e mensuráveis?
+
+Os desenvolvedores podem interpretar os requisitos de maneiras diferentes, produzir algo que não atende às necessidades do usuário, cometer erros e precisar refazer partes do projeto. Isso pode aumentar o tempo e o custo de desenvolvimento.
+
+### 4. Explique como vincular o código do requisito na mensagem de git commit ajuda na organização e manutenção de um projeto em equipe.
+
+Vincular o código do requisito ao commit permite identificar qual funcionalidade ou melhoria foi implementada naquela alteração. Isso facilita acompanhar o desenvolvimento, revisar o código, encontrar alterações antigas e compreender o histórico do projeto em equipe.
